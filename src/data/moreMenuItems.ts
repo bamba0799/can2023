@@ -33,7 +33,7 @@ export default [
       name: 'ios-game-controller-outline',
       size: 24,
     },
-    to: 'Extra/Games',
+    to: 'Extra/Game',
   },
   {
     id: '5',

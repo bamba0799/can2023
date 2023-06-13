@@ -7,6 +7,7 @@ import { Main } from '@screens/extra/Main';
 import { FavTeams } from '@screens/extra/FavTeams';
 import { Stadiums } from '@screens/extra/Stadiums';
 import { About } from '@screens/extra/About';
+import Game from '@screens/extra/Game';
 
 const Stack = createNativeStackNavigator<ExtraStackParamList>();
 
@@ -35,6 +36,10 @@ const ExtraStack = () => {
       <Stack.Screen
         name="Extra/About"
         component={About}
+      />
+      <Stack.Screen
+        name="Extra/Game"
+        component={Game}
       />
       {/* TODO: create these routes */}
       {/* 
