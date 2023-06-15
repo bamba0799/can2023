@@ -3,7 +3,7 @@ import { useHideBottomTab } from '@hooks/navigation';
 import { ExtraStackParamList } from '@navigation/app/home/extra/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet ,Image} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 interface Question {
   question: string;
@@ -112,19 +112,26 @@ const Game: React.FC<
           showBackIcon
           onNavigateBack={navigation.goBack}
         />
-        <View className="aspect-square w-full">
+
+        <View className="mt-10 h-[250] w-full">
           <Image
             source={require('./../extra/../../assets/images/yes.png')}
             resizeMode="contain"
-            className="h-[250] w-full"
+            className="h-full w-full "
             style={StyleSheet.absoluteFillObject}
           />
         </View>
         <View style={styles.container}>
-          <Text style={styles.questionText}>
+          <Text
+            style={styles.questionText}
+            className="mt-2"
+          >
             Question {currentQuestion + 1}/{questions.length}:
           </Text>
-          <Text style={styles.questionText}>
+          <Text
+            style={styles.questionText}
+            className="mt-4"
+          >
             {questions[currentQuestion].question}
           </Text>
           {renderOptions(questions[currentQuestion].options)}
