@@ -3,14 +3,13 @@ import { useHideBottomTab } from '@hooks/navigation';
 import { ExtraStackParamList } from '@navigation/app/home/extra/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet ,Image} from 'react-native';
 
 interface Question {
   question: string;
   options: string[];
   correctAnswer: string;
 }
-
 const Game: React.FC<
   NativeStackScreenProps<ExtraStackParamList, 'Extra/Game'>
 > = ({ navigation, route }) => {
@@ -21,49 +20,56 @@ const Game: React.FC<
 
   const questions: Question[] = [
     {
-      question: 'Quelle est la capitale de la Côte d Ivoire ?',
-      options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
-      correctAnswer: 'Paris',
+      question:
+        'Le Sénégal a remporté la dernière Coupe de la Coupe d Afrique des Nations en 2019 . ?',
+      options: ['Vrai', 'Faux'],
+      correctAnswer: 'Faux',
     },
     {
       question: 'Quelle est la capitale de la Côte d Ivoire ?',
       options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
       correctAnswer: 'Paris',
     },
+
     {
-      question: 'Quelle est la capitale de la Côte d Ivoire ?',
-      options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
-      correctAnswer: 'Paris',
+      question:
+        'Le Soudan a accueilli la première édition de la Coupe d Afrique des Nations en 1957.',
+      options: ['Vrai', 'Faux'],
+      correctAnswer: 'Vrai',
     },
     {
-      question: 'Quelle est la capitale de la Côte d Ivoire ?',
-      options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
-      correctAnswer: 'Paris',
+      question:
+        "Parmi ces pays, lequel détient le record du plus grand nombre de titres remportés en Coupe d'Afrique des Nations?",
+      options: ['Ghana', 'Égypte', 'Nigeria', 'Cameroun'],
+      correctAnswer: 'Égypte',
     },
     {
-      question: 'Quelle est la capitale de la Côte d Ivoire ?',
-      options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
-      correctAnswer: 'Paris',
+      question:
+        "Qui est le meilleur buteur de tous les temps en Coupe d'Afrique des Nations?",
+      options: ['Samuel Etoo', 'Didier Drogba', 'Hossam Hassan', 'Roger Milla'],
+      correctAnswer: 'Samuel Etoo',
     },
     {
-      question: 'Quelle est la capitale de la Côte d Ivoire ?',
-      options: ['Paris', 'Londres', 'Berlin', 'Abidjan'],
-      correctAnswer: 'Paris',
-    }, 
-    {
-      question: 'Quelle est la plus grande planète du système solaire ?',
-      options: ['Vénus', 'Jupiter', 'Mars', 'Saturne'],
-      correctAnswer: 'Jupiter',
+      question:
+        "Combien d'équipes participent à de la Coupe d'Afrique des Nations ?",
+      options: ['16', '24', '32', '20'],
+      correctAnswer: '24',
     },
     {
-      question: 'Quelle est la plus grande planète du système solaire ?',
-      options: ['Vénus', 'Jupiter', 'Mars', 'Saturne'],
-      correctAnswer: 'Jupiter',
+      question:
+        'Qui a été le meilleur buteur de la Coupe du Monde de la FIFA 2014 ?',
+      options: ['Lionel Messi', 'Neymar', 'James Rodríguez', 'Thomas Müller'],
+      correctAnswer: 'James Rodríguez',
     },
     {
-      question: 'Quelle est la plus grande planète du système solaire ?',
-      options: ['Vénus', 'Jupiter', 'Mars', 'Saturne'],
-      correctAnswer: 'Jupiter',
+      question: "Quelle est la langue officielle de l'Australie ?",
+      options: ['Anglais.', 'Français.', 'Aborigène.', 'Allemand'],
+      correctAnswer: 'Anglais',
+    },
+    {
+      question: "Quel est le groupe ethnique majoritaire en Côte d'Ivoire ?",
+      options: ['Akan', 'Baoulé', 'Bété', 'Sénoufo'],
+      correctAnswer: 'Akan',
     },
     // Ajoutez plus de questions ici
   ];
@@ -74,7 +80,6 @@ const Game: React.FC<
     if (answer === question.correctAnswer) {
       setScore(score + 1);
     }
-
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
@@ -107,6 +112,14 @@ const Game: React.FC<
           showBackIcon
           onNavigateBack={navigation.goBack}
         />
+        <View className="aspect-square w-full">
+          <Image
+            source={require('./../extra/../../assets/images/yes.png')}
+            resizeMode="contain"
+            className="h-[250] w-full"
+            style={StyleSheet.absoluteFillObject}
+          />
+        </View>
         <View style={styles.container}>
           <Text style={styles.questionText}>
             Question {currentQuestion + 1}/{questions.length}:
@@ -127,7 +140,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   questionText: {
     fontSize: 20,

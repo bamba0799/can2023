@@ -46,8 +46,8 @@ const POITabLabelList: React.FC<{
         <>
           <View className="mt-10 px-4">
             <Text className="font-[extraBold] text-lg">Points d'intérêts</Text>
-          </View>
-
+              </View>
+              
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
