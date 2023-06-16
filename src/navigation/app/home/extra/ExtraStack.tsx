@@ -5,8 +5,9 @@ import { ExtraStackParamList } from './types';
 import { Profile } from '@screens/extra/Profile';
 import { Main } from '@screens/extra/Main';
 import { FavTeams } from '@screens/extra/FavTeams';
-import { Stadiums } from '@screens/extra/Stadiums';
 import { About } from '@screens/extra/About';
+import { StadiumsStacks } from '../stadiums';
+import { BuyTicketsStack } from '../buyTickets';
 
 const Stack = createNativeStackNavigator<ExtraStackParamList>();
 
@@ -30,18 +31,18 @@ const ExtraStack = () => {
       />
       <Stack.Screen
         name="Extra/Stadiums"
-        component={Stadiums}
+        component={StadiumsStacks}
       />
       <Stack.Screen
         name="Extra/About"
         component={About}
       />
+      <Stack.Screen
+        name="Extra/BuyTickets"
+        component={BuyTicketsStack}
+      />
       {/* TODO: create these routes */}
       {/* 
-        <Stack.Screen
-          name="Extra/Tickets"
-          component={Tickets}
-        />
         <Stack.Screen
           name="Extra/Games"
           component={Games}

@@ -4,5 +4,6 @@ export type ExtraStackParamList = {
   'Extra/FavTeams': undefined;
   'Extra/Stadiums': undefined;
   'Extra/About': undefined;
+  'Extra/BuyTickets': any;
   // TODO: complete...
 };

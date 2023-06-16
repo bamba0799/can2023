@@ -13,3 +13,9 @@ export const getMatchsPerDate = async (date: string) => {
   const { data, statusText } = await axiosInstance.get<any>(URL);
   return data;
 };
+
+export const getOneMatch = async (matchId: string) => {
+  const URL = MATCHS_API_URL + `/${matchId}`;
+  const { data, statusText } = await axiosInstance.get<any>(URL);
+  return data;
+};

@@ -57,7 +57,7 @@ const items: Array<HomeTabItemProps> = [
     },
   },
   {
-    id: '1',
+    id: '5',
     name: 'Home/Extra',
     Screen: Extra,
     label: 'Extra',

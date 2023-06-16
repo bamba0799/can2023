@@ -13,18 +13,19 @@ import {
 import { HomeTabsParamList } from '@navigation/app/home/types';
 import { Header } from '@components/Header';
 import { Button } from '@components/Button';
-import { getMatchs } from './api';
-import { getMatchsPerDate } from './api';
 import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
 import { ScreenLoader } from '@components/ScreenLoader';
+import { getMatchs, getMatchsPerDate } from '@hooks/api/matchs';
+import { useMainStore } from '@store';
 
 const Matchs: React.FC<
   NativeStackScreenProps<HomeTabsParamList, 'Home/Matchs'>
-> = () => {
+> = ({ navigation }) => {
   const [dates, setDates] = useState<any[]>([]);
   const [matchperdates, setMatchperdates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(0);
   const [isPageLoading, setIsPageLoading] = useState(false);
+  const store = useMainStore((state) => state);
 
   async function getAllMatchs() {
     setIsPageLoading(true);
@@ -48,6 +49,13 @@ const Matchs: React.FC<
     } catch (e: any) {
       console.log(e.message);
     }
+  }
+
+  function onNavigateToBuyTicket(id: string) {
+    store.setMatchId(id);
+    navigation.navigate('Home/Extra' as any, {
+      screen: 'Extra/BuyTickets',
+    });
   }
 
   useEffect(() => {
@@ -231,7 +239,7 @@ const Matchs: React.FC<
                   ) : (
                     <View className="">
                       <Pressable
-                        onPress={() => null}
+                        onPress={() => onNavigateToBuyTicket(matchperdate.id)}
                         className="mt-5 rounded-full bg-black p-2 px-3"
                       >
                         <Text className="text-[11px] font-bold text-white">

@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Video, ResizeMode } from 'expo-av';
 import { HomeStackParamList } from '@navigation/app/home/home/types';
@@ -60,6 +60,29 @@ const highlights = [
   { id: '3', url: require('@assets/videos/vid-3.mov') },
 ];
 
+const previous_winners = [
+  {
+    id: '1',
+    source: require('@assets/images/previous_cans/sen.webp'),
+    year: 2021,
+  },
+  {
+    id: '2',
+    source: require('@assets/images/previous_cans/alg.jpeg'),
+    year: 2019,
+  },
+  {
+    id: '3',
+    source: require('@assets/images/previous_cans/cmr.webp'),
+    year: 2017,
+  },
+  {
+    id: '4',
+    source: require('@assets/images/previous_cans/civ.webp'),
+    year: 2015,
+  },
+];
+
 const Main: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'Home/Main'>
 > = ({ navigation, route }) => {
@@ -67,7 +90,7 @@ const Main: React.FC<
     <View className="flex-1">
       <Header
         title={() => (
-          <View className="flex-row">
+          <View className="ml-4 flex-row">
             <Text className="font-[extraBold] text-lg text-primary">Fan</Text>
             <Text className="font-[extraBold] text-lg">Xperience</Text>
           </View>
@@ -126,27 +149,28 @@ const Main: React.FC<
           />
 
           {/* Annoucement */}
-          <View className="mt-8 h-20 flex-row gap-x-3 px-4">
-            <View className="grow items-center justify-center rounded-xl bg-gray-200">
-              <Text className="font-[medium] text-gray-500">
-                Espace publicitaire
-              </Text>
+          <View className="mt-8 h-20 w-full flex-row gap-x-3 px-4">
+            <View className="h-full w-full items-center justify-center overflow-hidden rounded-xl bg-black">
+              <Image
+                source={require('@assets/images/pubs/otv-banner.png')}
+                className="h-full w-full scale-[2]"
+                resizeMode="contain"
+              />
             </View>
           </View>
         </View>
 
-        {/* awards (picture) */}
+        {/* Previous winners (picture) */}
         <View className="mt-8">
           <View className="px-4">
-            <Text className="text-lg font-bold">
-              Distinctions individuelles
-            </Text>
+            <Text className="text-lg font-bold">Précédents vainqueurs</Text>
           </View>
           <FlatList
             horizontal
-            data={[...Array(3).keys()]}
+            data={previous_winners}
+            keyExtractor={(item) => item.id}
             showsHorizontalScrollIndicator={false}
-            decelerationRate={0}
+            decelerationRate="fast"
             snapToInterval={342}
             snapToAlignment="center"
             className="mt-4"
@@ -155,10 +179,17 @@ const Main: React.FC<
               paddingHorizontal: 16,
             }}
             renderItem={({ item }) => (
-              <View
-                key={item}
-                className="h-[180] w-[320px] rounded-2xl bg-gray-300"
-              />
+              <View className="h-[180] w-[320px] overflow-hidden rounded-2xl">
+                <View className="absolute left-0 top-0 h-full w-full bg-gray-300" />
+                <Image
+                  source={item.source}
+                  className="h-full w-full"
+                  resizeMode="cover"
+                />
+                <View className="absolute right-1.5 top-1.5 rounded-full bg-white px-2 py-1">
+                  <Text className="font-[bold] text-xs">{item.year}</Text>
+                </View>
+              </View>
             )}
           />
         </View>
