@@ -21,7 +21,7 @@ const Header = ({ className, onNavigateBack, ...props }: HeaderProps) => {
 
   return (
     <View
-      className={`z-[999999] flex-row items-center justify-between bg-white px-4 pb-3 ${className}`}
+      className={`z-[999999] flex-row items-center justify-between gap-x-4 bg-white px-4 pb-3 ${className}`}
       style={{
         paddingTop: insets.top + 12,
         shadowOpacity: 1,
@@ -45,13 +45,18 @@ const Header = ({ className, onNavigateBack, ...props }: HeaderProps) => {
       ) : null}
 
       {typeof props.title === 'string' ? (
-        <Text className="font-[extraBold] text-lg">{props.title}</Text>
+        <Text
+          className="shrink font-[extraBold] text-lg"
+          numberOfLines={1}
+        >
+          {props.title}
+        </Text>
       ) : (
         <props.title />
       )}
 
       <Button
-        onPress={navigateToProfile}
+        onPress={onNavigateBack ?? navigateToProfile}
         className="h-7 w-7 items-center justify-center rounded-full"
       >
         <Image
