@@ -1,6 +1,7 @@
 declare module '@env' {
   export const API_BASE_URL: string;
   export const AUTH_DATA_KEY: string;
+  export const APP_FIRST_LAUNCH: string;
 
   // Payment
   export const PAYPAL_CLIENT_ID: string;
