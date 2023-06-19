@@ -6,4 +6,5 @@ export type ExtraStackParamList = {
   'Extra/About': undefined;
   'Extra/Game': undefined;
   'Extra/BuyTickets': any;
+  'Extra/Bet': undefined;
 };

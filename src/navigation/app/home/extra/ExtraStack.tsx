@@ -9,6 +9,7 @@ import { About } from '@screens/extra/About';
 import { StadiumsStacks } from '../stadiums';
 import { BuyTicketsStack } from '../buyTickets';
 import { Game } from '@screens/extra/Game';
+import { BetStack } from '@screens/extra/Bet';
 
 const Stack = createNativeStackNavigator<ExtraStackParamList>();
 
@@ -45,6 +46,10 @@ const ExtraStack = () => {
       <Stack.Screen
         name="Extra/BuyTickets"
         component={BuyTicketsStack}
+      />
+      <Stack.Screen
+        name="Extra/Bet"
+        component={BetStack}
       />
     </Stack.Navigator>
   );
