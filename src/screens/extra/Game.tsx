@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Game;
+export { Game };
