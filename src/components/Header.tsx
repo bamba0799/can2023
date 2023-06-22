@@ -9,14 +9,20 @@ type HeaderProps = {
   showBackIcon?: boolean;
   className?: string;
   onNavigateBack?: () => void;
+  onNavigateToProfile?: () => void;
 };
 
-const Header = ({ className, onNavigateBack, ...props }: HeaderProps) => {
+const Header = ({
+  className,
+  onNavigateBack,
+  onNavigateToProfile,
+  ...props
+}: HeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
   const navigateToProfile = () => {
-    navigation.navigate('Home/Extra', { screen: 'Extra/Profile' });
+    navigation.navigate('Extra/Profile' as never);
   };
 
   return (
@@ -56,7 +62,7 @@ const Header = ({ className, onNavigateBack, ...props }: HeaderProps) => {
       )}
 
       <Button
-        onPress={onNavigateBack ?? navigateToProfile}
+        onPress={onNavigateToProfile ?? navigateToProfile}
         className="h-7 w-7 items-center justify-center rounded-full"
       >
         <Image

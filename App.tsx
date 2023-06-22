@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { AppState, AppStateStatus, Platform } from 'react-native';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage, {
+  useAsyncStorage,
+} from '@react-native-async-storage/async-storage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   QueryClientProvider,
   QueryClient,
@@ -12,6 +15,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useAuthStore } from '@store/auth';
 import { useLoadFont } from '@hooks/fonts';
 import { APP_FIRST_LAUNCH } from '@env';
+import { getUser } from '@api/user';
 
 // stacks & screens
 import { AppStack } from '@navigation/app';
@@ -24,11 +28,44 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 
 const App = () => {
-  const authStore = useAuthStore((state) => state);
+  const { user, setUser, TOKEN_KEY } = useAuthStore((state) => state);
   const [fontsLoaded] = useLoadFont();
   const [showIntro, setShowIntro] = useState(false);
   const { getItem, setItem, removeItem } = useAsyncStorage(APP_FIRST_LAUNCH);
   const [isAppLoading, setIsAppLoading] = useState(false);
+  const [isGettingUser, setIsGettingUser] = useState(false);
+
+  const fetchUser = async () => {
+    setIsGettingUser(true);
+    console.log('Fetching user...');
+
+    // Get accessToken
+    const tokensAsString = await AsyncStorage.getItem(TOKEN_KEY);
+    let tokens: any;
+
+    if (tokensAsString == null) {
+      console.log('No token in AS');
+      return setIsGettingUser(false);
+    }
+
+    tokens = JSON.parse(tokensAsString);
+
+    try {
+      const { data, status } = await getUser(tokens.accessToken);
+
+      if (status !== 200) {
+        console.log(data);
+        setIsGettingUser(false);
+        throw data;
+      }
+
+      await setUser(data);
+      setIsGettingUser(false);
+    } catch (e: any) {
+      setIsGettingUser(false);
+      console.log(e.message);
+    }
+  };
 
   const checkIfAPPHasAlreadyBeenLaunched = async () => {
     setIsAppLoading(true);
@@ -41,7 +78,7 @@ const App = () => {
         await setItem('1');
       }
 
-      await removeItem(); // Remove that later
+      // await removeItem(); // Remove that later
       setIsAppLoading(false);
     } catch (e: any) {
       console.log(e.message);
@@ -60,6 +97,7 @@ const App = () => {
 
   useEffect(() => {
     checkIfAPPHasAlreadyBeenLaunched();
+    fetchUser();
 
     const subscription = AppState.addEventListener('change', onAppStateChange);
     return () => subscription.remove();
@@ -79,7 +117,7 @@ const App = () => {
     };
   }, [fontsLoaded]);
 
-  if (!fontsLoaded || isAppLoading) {
+  if (!fontsLoaded || isAppLoading || isGettingUser) {
     return null;
   }
 
@@ -95,7 +133,9 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        {authStore.user ? <AppStack /> : <AuthStack />}
+        <SafeAreaProvider>
+          {user ? <AppStack /> : <AuthStack />}
+        </SafeAreaProvider>
         <StatusBar style="auto" />
       </NavigationContainer>
     </QueryClientProvider>

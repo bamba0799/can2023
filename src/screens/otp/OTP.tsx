@@ -1,42 +1,60 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, ActivityIndicator } from 'react-native';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { Button } from '@components/Button';
-import { Input } from '@components/Input';
-import { useLogin } from '@hooks/api/auth';
+import { useValidateOTP } from '@hooks/api/auth';
 import { AuthStackParamList } from '@navigation/auth/types';
+import { useAuthStore } from '@store/auth';
+import { Input } from '@components/Input';
+import { Button } from '@components/Button';
+import { getUser } from '@api/user';
 
-const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
+const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
   navigation,
 }) => {
-  const [phone, setPhone] = useState('');
+  const [OTP, setOTP] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
-  const { mutateAsync: login } = useLogin();
+  const { mutateAsync: validateOTP } = useValidateOTP();
+  const { TOKEN_KEY, setUser } = useAuthStore((state) => state);
+  const { setItem: persistTokens } = useAsyncStorage(TOKEN_KEY);
 
   const submitHandler = async () => {
     setIsLoggingIn(true);
 
-    if (!phone) {
+    if (!OTP) {
       return setIsLoggingIn(false);
     }
 
     try {
-      await login(
+      await validateOTP(
         {
-          contact: phone,
+          OTP,
         },
         {
-          onSuccess: (data) => {
-            setIsLoggingIn(false);
-            console.log(data);
-            navigation.navigate('OTP');
+          onSuccess: async (data) => {
+            try {
+              await persistTokens(JSON.stringify(data));
+              const { data: user, status } = await getUser(data.accessToken);
+
+              if (status !== 200) {
+                console.log(data);
+                setIsLoggingIn(false);
+                throw data;
+              }
+
+              await setUser(user);
+              setIsLoggingIn(false);
+            } catch (e: any) {
+              setIsLoggingIn(false);
+              console.log(e.message);
+            }
           },
           onError: (error: any) => {
             setIsLoggingIn(false);
             console.log(error);
-            Alert.alert('Erreur lors de la connexion', error.message);
+            Alert.alert('Erreur lors de la validation', error.message);
           },
         }
       );
@@ -52,19 +70,19 @@ const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
         <Input
           containerProps={{ className: 'w-[320px]' }}
           textInputProps={{
-            value: phone,
-            onChangeText: setPhone,
+            value: OTP,
+            onChangeText: setOTP,
             keyboardType: 'number-pad',
-            placeholder: 'Entrez votre numéro',
-            maxLength: 10,
+            placeholder: 'Entrez le code reçu',
+            maxLength: 4,
           }}
         />
         <Button
-          className={`flex-row items-center justify-center rounded-lg px-4 py-2 ${
-            isLoggingIn || phone.length !== 10 ? 'bg-orange-300' : 'bg-primary'
+          className={`flex-row items-center justify-center rounded-lg bg-black px-4 py-2 ${
+            isLoggingIn || OTP.length !== 4 ? 'bg-orange-300' : 'bg-primary'
           }`}
-          disabled={isLoggingIn || phone.length !== 10}
           onPress={submitHandler}
+          disabled={isLoggingIn || OTP.length !== 4}
         >
           {isLoggingIn ? (
             <ActivityIndicator
@@ -75,7 +93,7 @@ const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
           ) : (
             <>
               <Text className="text-center font-[semiBold] text-sm text-white">
-                Suivant
+                Confirmer
               </Text>
               <Ionicons
                 name="ios-arrow-forward-outline"
@@ -90,4 +108,4 @@ const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
   );
 };
 
-export default Login;
+export default OTP;

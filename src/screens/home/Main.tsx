@@ -95,6 +95,9 @@ const Main: React.FC<
             <Text className="font-[extraBold] text-lg">Xperience</Text>
           </View>
         )}
+        onNavigateToProfile={() =>
+          navigation.navigate('Home/Extra', { screen: 'Extra/Profile' })
+        }
       />
 
       <ScreenContentLayout

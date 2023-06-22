@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuthStore } from '@store/auth';
 import { useEffect, useState } from 'react';
 
 export const useAsyncStorage = (key: string) => {

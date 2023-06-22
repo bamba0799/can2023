@@ -1,23 +1,22 @@
 import { create } from 'zustand';
 
 export type User = {
-  userId: string;
+  id: string;
   contact: string;
 };
 
 type AuthProps = {
   user: User | null;
+  TOKEN_KEY: string;
   setUser: <T extends User>(user: T | null) => Promise<void>;
 };
 
 export const useAuthStore = create<AuthProps>((set) => ({
-  user: {
-    userId: '1',
-    contact: '0709056925',
-  },
+  user: null,
+  TOKEN_KEY: 'token',
   setUser: (user: any) =>
     new Promise((rejected, resolved) => {
       set({ user });
-      resolved();
+      resolved(true);
     }),
 }));

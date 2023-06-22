@@ -8,7 +8,10 @@ const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
 const HomeTabs = () => {
   return (
-    <Tab.Navigator id="HomeTab">
+    <Tab.Navigator
+      id="HomeTab"
+      initialRouteName={tabItems[0].name}
+    >
       {tabItems.map((tabItem) => (
         <Tab.Screen
           key={tabItem.id}

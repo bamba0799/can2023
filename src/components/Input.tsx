@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 type InputProps = {
-  label: string;
+  label?: string;
   containerProps?: ViewProps;
   labelProps?: TextProps;
   textInputProps?: TextInputProps;
@@ -28,17 +28,19 @@ const Input: React.FC<InputProps> = ({
       className="flex-1 space-y-1"
       {...containerProps}
     >
-      <Text
-        className="text-xs"
-        {...labelProps}
-      >
-        {label}
-      </Text>
+      {label ? (
+        <Text
+          className="text-xs"
+          {...labelProps}
+        >
+          {label}
+        </Text>
+      ) : null}
       <TextInput
         placeholder=""
         className={`rounded-lg border border-gray-300 p-2.5 text-sm leading-[18px] text-gray-800 ${
           editable ? 'bg-white' : 'bg-gray-200'
-        }`}
+        } ${textInputProps?.className}`}
         autoCapitalize="none"
         numberOfLines={1}
         editable={editable}
