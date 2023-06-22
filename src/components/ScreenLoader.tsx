@@ -1,5 +1,5 @@
-import { ActivityIndicator, Text, View } from 'react-native';
-import { Center } from './Center';
+import { ActivityIndicator, View } from 'react-native';
+
 
 const ScreenLoader = () => {
   return (
