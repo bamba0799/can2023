@@ -44,7 +44,7 @@ const App = () => {
     let tokens: any;
 
     if (tokensAsString == null) {
-      console.log('No token in AS');
+      console.log('No token in storage');
       return setIsGettingUser(false);
     }
 

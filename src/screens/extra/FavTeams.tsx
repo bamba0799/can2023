@@ -30,9 +30,7 @@ const FavTeams: React.FC<
 > = ({ navigation, route }) => {
   const user = useAuthStore((state) => state.user);
   const { data: currentTeams, isLoading: isCurrentLoading } = useCurrentTeams();
-  const { data: favTeams, isLoading: isFavLoading } = useFavTeams(
-    user?.userId!
-  );
+  const { data: favTeams, isLoading: isFavLoading } = useFavTeams(user?.id!);
   const { mutateAsync: addTeamAsFav } = useAddTeamAsFav();
   const { mutateAsync: unassignTeamToUser } = useRemoveTeamToFav();
   const queryClient = useQueryClient();
@@ -47,7 +45,7 @@ const FavTeams: React.FC<
       await addTeamAsFav(
         {
           teamId: team.id,
-          userId: user?.userId!,
+          userId: user?.id!,
           isMemberOfCurrentCAN: team.isMemberOfCurrentCAN,
         },
         {
@@ -68,7 +66,7 @@ const FavTeams: React.FC<
     try {
       await unassignTeamToUser(
         {
-          userId: user?.userId!,
+          userId: user?.id!,
           teamId: team.id,
         },
         {
@@ -165,7 +163,7 @@ const FavTeams: React.FC<
                 </Text>
               </View>
 
-              {team.users.find((u: any) => u.id === user?.userId) ? (
+              {team.users.find((u: any) => u.id === user?.id) ? (
                 <Button
                   className={`w-24 flex-row items-center justify-center space-x-1.5 rounded-full border bg-black px-3 py-[6px]`}
                   onPress={() => onUnfollow(team)}

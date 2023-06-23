@@ -7,6 +7,7 @@ import { Button } from './Button';
 type HeaderProps = {
   title: string | React.FC;
   showBackIcon?: boolean;
+  showProfile?: boolean;
   className?: string;
   onNavigateBack?: () => void;
   onNavigateToProfile?: () => void;
@@ -14,6 +15,7 @@ type HeaderProps = {
 
 const Header = ({
   className,
+  showProfile = true,
   onNavigateBack,
   onNavigateToProfile,
   ...props
@@ -61,17 +63,19 @@ const Header = ({
         <props.title />
       )}
 
-      <Button
-        onPress={onNavigateToProfile ?? navigateToProfile}
-        className="h-7 w-7 items-center justify-center rounded-full"
-      >
-        <Image
-          // TODO: Display user's profile picture when authed
-          source={require('@assets/images/user.png')}
-          className="h-full w-full"
-          resizeMode="contain"
-        />
-      </Button>
+      {showProfile ? (
+        <Button
+          onPress={onNavigateToProfile ?? navigateToProfile}
+          className="h-7 w-7 items-center justify-center rounded-full"
+        >
+          <Image
+            // TODO: Display user's profile picture when authed
+            source={require('@assets/images/user.png')}
+            className="h-full w-full"
+            resizeMode="contain"
+          />
+        </Button>
+      ) : null}
     </View>
   );
 };

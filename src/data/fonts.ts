@@ -1,8 +1,8 @@
 export default {
-  regular: require('@assets/fonts/inter-regular.otf'),
-  medium: require('@assets/fonts/inter-medium.otf'),
-  semiBold: require('@assets/fonts/inter-semiBold.otf'),
-  bold: require('@assets/fonts/inter-bold.otf'),
-  extraBold: require('@assets/fonts/inter-extraBold.otf'),
-  black: require('@assets/fonts/inter-black.otf'),
+  regular: require('@assets/fonts/poppinsRegular.ttf'),
+  medium: require('@assets/fonts/poppinsMedium.ttf'),
+  semiBold: require('@assets/fonts/poppinsSemiBold.ttf'),
+  bold: require('@assets/fonts/poppinsBold.ttf'),
+  extraBold: require('@assets/fonts/poppinsExtraBold.ttf'),
+  black: require('@assets/fonts/poppinsBlack.ttf'),
 };
