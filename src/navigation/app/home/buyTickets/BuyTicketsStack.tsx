@@ -1,18 +1,12 @@
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BuyTicketsStackParamList } from './types';
-import { ExtraStackParamList } from '../extra/types';
 
 // screens
 import { Main } from '@screens/extra/buyTickets/Main';
 
 const Stack = createNativeStackNavigator<BuyTicketsStackParamList>();
 
-const BuyTicketsStack: React.FC<
-  NativeStackScreenProps<ExtraStackParamList, 'Extra/BuyTickets'>
-> = ({ route }) => {
+const BuyTicketsStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="BuyTickets/Main"
@@ -22,12 +16,6 @@ const BuyTicketsStack: React.FC<
         name="BuyTickets/Main"
         component={Main as any}
       />
-      {/* 
-        <Stack.Screen
-          name="BuyTickets/..."
-          component={() => null}
-        /> 
-      */}
     </Stack.Navigator>
   );
 };

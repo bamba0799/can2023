@@ -39,22 +39,21 @@ const App = () => {
     setIsGettingUser(true);
     console.log('Fetching user...');
 
-    // Get accessToken
-    const tokensAsString = await AsyncStorage.getItem(TOKEN_KEY);
-    let tokens: any;
-
-    if (tokensAsString == null) {
-      console.log('No token in storage');
-      return setIsGettingUser(false);
-    }
-
-    tokens = JSON.parse(tokensAsString);
-
     try {
+      // Get accessToken
+      const tokensAsString = await AsyncStorage.getItem(TOKEN_KEY);
+      let tokens: any;
+
+      if (tokensAsString == null) {
+        console.log('No token in storage');
+        return setIsGettingUser(false);
+      }
+
+      tokens = JSON.parse(tokensAsString);
+
       const { data, status } = await getUser(tokens.accessToken);
 
       if (status !== 200) {
-        console.log(data);
         setIsGettingUser(false);
         throw data;
       }
@@ -109,12 +108,10 @@ const App = () => {
     if (fontsLoaded) {
       timerId = setTimeout(() => {
         hidSplashScreen();
-      }, 1500);
+      }, 1000);
     }
 
-    return () => {
-      clearTimeout(timerId);
-    };
+    return () => clearTimeout(timerId);
   }, [fontsLoaded]);
 
   if (!fontsLoaded || isAppLoading || isGettingUser) {
