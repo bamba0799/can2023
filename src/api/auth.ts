@@ -12,8 +12,7 @@ type ValidateOTPProps = {
 };
 
 export async function login(props: LoginProps) {
-  const URL = AUTH_API_URL + '/login-or-register';
-  const { data } = await axiosInstance.post(URL, props);
+  const { data } = await axiosInstance.post(AUTH_API_URL, props);
   return data;
 }
 
