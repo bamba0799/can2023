@@ -10,6 +10,8 @@ import { Button } from '@components/Button';
 import { BuyTicketsStackParamList } from "@navigation/app/home/buyTickets/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import { getMatchs } from "@utils/match";
+
 const Main: React.FC<
 NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
 > = ({navigation}) => {
@@ -31,6 +33,7 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
   ]
 
 
+
   const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
 
  const paymentMethodData = [
@@ -39,6 +42,13 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
   ]
   const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod);
   console.log(paymentMethod)
+
+  useEffect(() => {
+    getMatchs()
+    .then((matchs) => {
+      console.log(matchs)
+    })
+  },[])
   return (
     <View className='w-full'>
        <Header showBackIcon title={"Ticket"}/>
@@ -52,17 +62,26 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
             </Text>
           </View>
           <View className="mt-2 h-20 flex-row space-x-2 p-2">
-            <View className="w-1/2">
-            <Input
-              label="Date"
-              editable={false}
-              containerProps={{ className: 'flex-[1.75] space-y-1' }}
-              textInputProps={{
-                value: "matchsdate",
-              }}
-            />
-            
-            </View>
+          <View className="flex-1 space-y-1">
+            <Text className="text-xs">Match</Text>
+                <Dropdown
+                data={categoryData}
+                value={category}
+                labelField={'label'}
+                valueField={'label'}
+                style={styles.dropdown}
+                selectedTextStyle={[styles.dropdown_text]}
+                containerStyle={styles.dropdown_item_container}
+                itemContainerStyle={{ borderRadius: 8 }}
+                itemTextStyle={[styles.dropdown_text, { fontSize: 16 }]}
+                iconStyle={styles.dropdown_icon}
+                onChange={(value) => setCategory(value)}
+                renderRightIcon={(visible) => (
+                  <Ionicons name="ios-caret-down-outline" />
+                )}
+               
+              />
+              </View>
             <View className=" w-1/2">
               <Input
                 label="Match"
