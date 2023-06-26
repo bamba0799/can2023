@@ -40,7 +40,6 @@ const DataApiPaypal = (quantity:string, amount:string) => {
   };
 }
 
-
 const capturePayment = (id: any, token = "") => {
   const requestOptions = {
     method: "POST",
@@ -201,7 +200,7 @@ const buyTicketPerOrangeMoney = async(accesTokenOrange:string) => {
   const requestBody = {
     "merchant_key": "a42dca79",
     "currency": "OUV",
-    "order_id": "TestOPE_001903hjat",
+    "order_id": "TestOPE_001903hjvot",
     "amount": 1500,
     "return_url": "http://www.merchant-example.org/return",
     "cancel_url": "http://www.merchant-example.org/cancel",
@@ -228,9 +227,6 @@ try {
 }
 
 }
-
-
-
 
 
 export { 

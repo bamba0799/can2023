@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, Modal, TouchableOpacity} from "react-native";
+import { View, Text, Pressable, Modal, TouchableOpacity, StyleSheet} from "react-native";
 import { RegularButton } from "../../components/Buttons";
-import { HomeIcon } from "../../components/Icons";
-import { RegularInput } from "../../components/Inputs";
-import RNPickerSelect from "react-native-picker-select";
+import { HomeIcon } from "@components/Icons";
+import { Ionicons } from '@expo/vector-icons';
+import { RegularInput } from "@components/Inputs";
+import { Input } from '@components/Input';
+import { Button } from '@components/Button';
+import { Dropdown } from 'react-native-element-dropdown';
 import { useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -17,7 +20,7 @@ import { Header } from "@components/Header";
 import {capturePayment, DataApiPaypal, generatePdf, getAccesTokenOrange, buyTicketPerOrangeMoney} from "./api/index";
 
 
-
+//vrai
 const MatchsBuyTicket: React.FC<
   NativeStackScreenProps<MatchsStackParamList, "Matchs/MatchsBuyTicket">
 > = ({ navigation }) => {
@@ -37,12 +40,27 @@ const MatchsBuyTicket: React.FC<
   const [orangeMoneyUrl, setOrangeMoneyUrl] = useState<any>(null)
   console.log("le l'url d'orange est ", orangeMoneyUrl)
 
-  const [quantityOfTicket, onChangeQuantityOfTicket] = React.useState("1");
+  const [quantityOfTicket, setQuantityOfTicket] = React.useState("1");
   const numberInt = parseInt(quantityOfTicket) * 2000;
   const amountTicketNusd = Math.ceil(numberInt / 612.56)
   const amountTicketStringusd = amountTicketNusd.toString()
   const amountTicket = numberInt.toString();
+  
+  const defaultTicketCategory = {id:"0", label:"Ordinaire", value:"1"}
+  const [category, setCategory] = useState(defaultTicketCategory)
+  console.log(category)
+  const categoryData = [
+    defaultTicketCategory,
+    {id: "1",label:"VIP", value:"2"},
+  ]
+const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
 
+ const paymentMethodData = [
+  defaultPaymentMethod,
+  {id:"1", label: "Carte bancaire", value: "carte" },
+  ]
+  const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod);
+  console.log(paymentMethod)
 
   const [modalAn, setModalAn] = useState(false)
   const [modalRn, setModalRn] = useState(false)
@@ -113,9 +131,9 @@ const MatchsBuyTicket: React.FC<
 
 
   const suivant = () => {
-    if (categorySelectValue == "carte") {
+    if (paymentMethod.value == "carte") {
       buyTicketPerPaypal(accessToken)
-    } else if (categorySelectValue == "money") {
+    } else if (paymentMethod.value == "money") {
       buyTicketPerOrangeMoney(accesTokenOrange).then(
         (res) => setOrangeMoneyUrl(res)
         ).catch(err => console.log("erreur de paiement orange"))
@@ -164,8 +182,7 @@ const MatchsBuyTicket: React.FC<
 
   const matchsConfrontation = equipe1 + " - " + equipe2;
 
-  const [categorySelectValue, setCategorySelectValue] = useState();
-  console.log(categorySelectValue)
+ 
 
  
 
@@ -186,58 +203,66 @@ const MatchsBuyTicket: React.FC<
               Procurer vous des tickets ici
             </Text>
           </View>
-          <View className="mt-6 flex-row space-x-2">
-          
-          </View>
-          <View className="mt-2 flex-row space-x-2 p-2">
-            <View className=" w-1/2 ">
-              <View className="mb-[2px] flex-row">
-                <Text>Date</Text>
-                <Text className="text-red-700">*</Text>
-              </View>
-              <RegularInput
-                value={matchsdate}
-                editable={false}
-                className=""
-              />
+
+{/* matchsConfrontation */}
+          <View className="mt-2 h-20 flex-row space-x-2 p-2">
+            <View className="w-1/2">
+            <Input
+              label="Date"
+              editable={false}
+              containerProps={{ className: 'flex-[1.75] space-y-1' }}
+              textInputProps={{
+                value: matchsdate,
+              }}
+            />
+            
             </View>
             <View className=" w-1/2">
-              <View className="mb-[2px] flex-row">
-                <Text>Confrontation</Text>
-                <Text className="text-red-700">*</Text>
-              </View>
-              <RegularInput editable={false} value={matchsConfrontation}></RegularInput>
+              <Input
+                label="Match"
+                editable={false}
+                containerProps={{ className: 'flex-[1.75] space-y-1' }}
+                textInputProps={{
+                  value: matchsConfrontation,
+                }}
+              />
             </View>
           </View>
+
+
           <View className="mt-4 flex-row space-x-2 p-2 items-center justify-center">
-            <View className=" w-1/2  h-11 mb-4  pl-2">
-              <View className="mb-[2px] flex-row">
-                <Text>Catégorie</Text>
-                <Text className="text-red-700">*</Text>
-              </View>
-              <View className=" border border-gray-400 pl-3 pt-3 h-11 rounded-md">
-              
-                <RNPickerSelect
-                  value={categorySelectValue}
-                  onValueChange={(value) => console.log(value)}
-                  items={[
-                    { label: "Standard", value: "1" },
-                    { label: "VIP", value: "2" },
-                    { label: "VVIP", value: "3" },
-                  ]}
-                />
-              </View>
-            </View>
-            <View className=" w-1/2 ">
-              <View className="mb-[2px] flex-row">
-                <Text>Nombre</Text>
-                <Text className="text-red-700">*</Text>
-              </View>
-              <RegularInput
-                onChangeText={onChangeQuantityOfTicket}
-                value={quantityOfTicket}
-                keyboardType="numeric"
+            <View className="flex-1 space-y-1">
+            <Text className="text-xs">Catégorie</Text>
+                <Dropdown
+                data={categoryData}
+                value={category}
+                labelField={'label'}
+                valueField={'label'}
+                style={styles.dropdown}
+                selectedTextStyle={[styles.dropdown_text]}
+                containerStyle={styles.dropdown_item_container}
+                itemContainerStyle={{ borderRadius: 8 }}
+                itemTextStyle={[styles.dropdown_text, { fontSize: 16 }]}
+                iconStyle={styles.dropdown_icon}
+                onChange={(value) => setCategory(value)}
+                renderRightIcon={(visible) => (
+                  <Ionicons name="ios-caret-down-outline" />
+                )}
+               
               />
+              </View>
+            
+            
+            <View className=" w-1/2 ">
+            
+                <Input
+                  label="Nombre"
+                  textInputProps={{
+                    value: quantityOfTicket,
+                    onChangeText: setQuantityOfTicket,
+                    keyboardType: 'number-pad',
+              }}
+            />
             </View>
           </View>
           <View className="mt-4 flex-row space-x-2 p-2">
@@ -253,24 +278,43 @@ const MatchsBuyTicket: React.FC<
                 <Text>Mode de paiement</Text>
                 <Text className="text-red-700">*</Text>
               </View>
-              <RNPickerSelect
-                onValueChange={(value) => setCategorySelectValue(value)}
-                items={[
-                  { label: "Orange money", value: "money" },
-                  { label: "Carte bancaire", value: "carte" },
-                ]}
+
+              {/* <RNPickerSelect
+                onValueChange={(value) => setPaymentMethod(value)}
+                items={paymentMethodData}
+              /> */}
+               <Dropdown
+                data={paymentMethodData}
+                value={paymentMethod}
+                labelField={'label'}
+                valueField={'label'}
+                style={styles.dropdown}
+                selectedTextStyle={[styles.dropdown_text]}
+                containerStyle={styles.dropdown_item_container}
+                itemContainerStyle={{ borderRadius: 8 }}
+                itemTextStyle={[styles.dropdown_text, { fontSize: 16 }]}
+                iconStyle={styles.dropdown_icon}
+                onChange={(value) => setPaymentMethod(value)}
+                renderRightIcon={(visible) => (
+                  <Ionicons name="ios-caret-down-outline" />
+                )}
+               
               />
+
             </View>
           </View>
           <View className="mt-6">
-            <RegularButton onPress={() => suivant()} background="bg-black">
-              <Text className="font-semibold text-white">Suivant</Text>
-            </RegularButton>
+          
+
+          <Button className="mt-8 flex-row items-center justify-center rounded-lg bg-black"onPress={() => suivant()}  >
+            <Text  className="p-3 text-center font-[semiBold] text-sm text-white"> Procéder au paiement</Text>
+            <Ionicons  name="ios-arrow-forward" size={14}  color="white" />
+          </Button>
 
 
-            <RegularButton onPress={generatePdf} background="bg-black mt-10">
+            {/* <RegularButton onPress={generatePdf} background="bg-black mt-10">
               <Text className="font-semibold text-white">generer</Text>
-            </RegularButton>
+            </RegularButton> */}
 
             {/* paiement sur paypal web */}
             <Modal visible={!!paypalUrl}>
@@ -321,3 +365,30 @@ const MatchsBuyTicket: React.FC<
   );
 };
 export default MatchsBuyTicket;
+
+const styles = StyleSheet.create({
+  dropdown: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgb(209 213 219)',
+    paddingHorizontal: 10,
+    flexGrow: 1,
+  },
+  dropdown_text: {
+    fontSize: 14,
+    lineHeight: 18,
+    color: 'rgb(31 41 55)',
+  },
+  dropdown_item_container: {
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 4,
+    borderColor: 'rgb(209 213 219)',
+    shadowColor: 'transparent',
+  },
+  dropdown_icon: {
+    width: 14,
+    height: 18,
+  },
+});
