@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, Modal, TouchableOpacity, StyleSheet} from "react-native";
-import { RegularButton } from "../../components/Buttons";
-import { HomeIcon } from "@components/Icons";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { RegularInput } from "@components/Inputs";
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useRoute } from "@react-navigation/native";
-import LottieView from "lottie-react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MatchsStackParamList } from "@navigation/app/home/matchs/types";
 import WebView from "react-native-webview";
@@ -345,15 +342,15 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
             </Modal>
             <Modal visible={!!modalRn}>
               <View className="flex-1 items-center justify-center">
-                <LottieView source={require("../../assets/images/lottieFiles/checked.json")} duration={2000}></LottieView>
+               
                 <Text className="font-bold text-black" style={{ fontSize: 24 }}>Achat effectué avec succès</Text>
                 <View className="mt-5 flex-row space-x-3">
-                  <RegularButton background="bg-black" rounded>
+                  <Button className="bg-black rounded-3xl items-center justify-center p-1" >
                     <Text className="font-semibold text-white"> Voir le ticket </Text>
-                  </RegularButton>
+                  </Button>
                   <View>
-                    <Pressable className="self-start rounded-full bg-icon px-4 py-4" onPress={() => { navigation.navigate("Matchs/Main") }}>
-                      <HomeIcon width={18} height={18} />
+                    <Pressable className="self-start rounded-full bg-gray-200 px-2 py-2" onPress={() => { navigation.navigate("Matchs/Main") }}>
+                      <AntDesign color={"black"} name="home" size={24}  />
                     </Pressable>
                   </View>
                 </View>
