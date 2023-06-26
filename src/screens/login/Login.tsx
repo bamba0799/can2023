@@ -35,7 +35,6 @@ const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
         {
           onSuccess: (data) => {
             setIsLoggingIn(false);
-            console.log(data);
             navigation.navigate('OTP');
           },
           onError: (error: any) => {
@@ -84,6 +83,7 @@ const Login: React.FC<NativeStackScreenProps<AuthStackParamList, 'Login'>> = ({
                   placeholder="N° de téléphone ici"
                   textAlignVertical="center"
                   textContentType="telephoneNumber"
+                  keyboardType="number-pad"
                   verticalAlign="middle"
                   clearButtonMode="while-editing"
                 />

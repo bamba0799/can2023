@@ -42,7 +42,6 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
               const { data: user, status } = await getUser(data.accessToken);
 
               if (status !== 200) {
-                console.log(data);
                 setIsLoggingIn(false);
                 throw data;
               }
@@ -84,7 +83,7 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
 
           <View className="mt-10">
             <View className="items-center space-y-2">
-              <Text className="font-[bold] text-2xl">
+              <Text className="text-center font-[bold] text-2xl">
                 Encore une dernière étape 🏁
               </Text>
               <Text className="font-[medium] text-sm">
@@ -102,6 +101,7 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
                   placeholder="Entrez le code à 4 chiffres ici"
                   textAlignVertical="center"
                   textContentType="oneTimeCode"
+                  keyboardType="number-pad"
                   verticalAlign="middle"
                   clearButtonMode="while-editing"
                 />
