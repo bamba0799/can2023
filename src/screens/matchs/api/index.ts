@@ -1,71 +1,9 @@
 import { Buffer } from "buffer";
 import axios from "axios";
-import { useState } from "react";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { Asset } from "expo-asset";
 
-const DataApiPaypal = (quantity:string, amount:string) => {
-  return {
-    "intent": "CAPTURE",
-    "purchase_units": [
-      {
-        "items": [
-          {
-            "name": "lot de " + `${quantity}` + " ticket",
-            "description": "Green XL",
-            "quantity": "1",
-            "unit_amount": {
-              "currency_code": "USD",
-              "value": amount
-            }
-          }
-        ],
-        "amount": {
-          "currency_code": "USD",
-          "value": amount,
-          "breakdown": {
-            "item_total": {
-              "currency_code": "USD",
-              "value": amount
-            }
-          }
-        }
-      }
-    ],
-    "application_context": {
-      "return_url": "https://example.com/return",
-      "cancel_url": "https://example.com/cancel"
-    }
-  };
-}
-
-const capturePayment = (id: any, token = "") => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    fetch(
-      "https://api.sandbox.paypal.com" + `/v2/checkout/orders/${id}/capture`,
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        console.log("result print", result);
-        const res = JSON.parse(result);
-        resolve(res);
-      })
-      .catch((error) => {
-        console.log("error raised", error);
-        reject(error);
-      });
-  });
-};
 
 const CodeTicket = (ballonImage:any, qrCode:any, canLogo:any) => {
   return  `
@@ -200,7 +138,7 @@ const buyTicketPerOrangeMoney = async(accesTokenOrange:string) => {
   const requestBody = {
     "merchant_key": "a42dca79",
     "currency": "OUV",
-    "order_id": "TestOPE_001903hjvot",
+    "order_id": "TestOPE_001903wjvvot",
     "amount": 1500,
     "return_url": "http://www.merchant-example.org/return",
     "cancel_url": "http://www.merchant-example.org/cancel",
@@ -230,8 +168,7 @@ try {
 
 
 export { 
-  capturePayment, 
-  DataApiPaypal, 
+
   CodeTicket, 
   generatePdf, 
   getAccesToken, 

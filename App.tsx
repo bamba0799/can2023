@@ -49,7 +49,7 @@ const App = () => {
         return setIsGettingUser(false);
       }
 
-      tokens = JSON.parse(tokensAsString);
+      tokens = JSON.parse(tokensAsString);      
 
       const { data, status } = await getUser(tokens.accessToken);
 
@@ -77,7 +77,8 @@ const App = () => {
         await setItem('1');
       }
 
-      // await removeItem(); // Remove that later
+      // await removeItem(); Remove that later
+      
       setIsAppLoading(false);
     } catch (e: any) {
       console.log(e.message);
