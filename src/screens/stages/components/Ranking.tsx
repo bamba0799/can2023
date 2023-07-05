@@ -9,7 +9,6 @@ type RankingProps = {
   showDetailsButton?: boolean;
   containerStyles?: ViewStyle;
   onNavigateToDetails?: () => void;
-  onNavigateToTeam?: () => void;
 };
 
 const Ranking: React.FC<RankingProps> = ({
@@ -17,9 +16,15 @@ const Ranking: React.FC<RankingProps> = ({
   showDetailsButton = false,
   containerStyles = {},
   onNavigateToDetails,
-  onNavigateToTeam,
 }) => {
   const navigation = useNavigation();
+
+  const navigateToTeam = (team: any) => {
+    navigation.navigate('Stages/Team', {
+      screen: 'Team/Main',
+      params: team,
+    });
+  };
 
   return (
     <View style={[containerStyles]}>
@@ -62,7 +67,7 @@ const Ranking: React.FC<RankingProps> = ({
             <Pressable
               key={team.code}
               className="flex-row justify-between px-4 py-3"
-              onPress={onNavigateToTeam}
+              onPress={() => navigateToTeam(team)}
             >
               <View className="mr-2 flex-1 flex-row items-center space-x-3">
                 <View className="rounded-full border border-gray-100">
