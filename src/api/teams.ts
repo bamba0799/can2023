@@ -34,3 +34,4 @@ export async function removeFavTeam(props: { userId: string; teamId: string }) {
   });
   return data;
 }
+

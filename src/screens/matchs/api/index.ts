@@ -1,71 +1,10 @@
 import { Buffer } from "buffer";
 import axios from "axios";
-import { useState } from "react";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { Asset } from "expo-asset";
+// import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib'; 
 
-const DataApiPaypal = (quantity:string, amount:string) => {
-  return {
-    "intent": "CAPTURE",
-    "purchase_units": [
-      {
-        "items": [
-          {
-            "name": "lot de " + `${quantity}` + " ticket",
-            "description": "Green XL",
-            "quantity": "1",
-            "unit_amount": {
-              "currency_code": "USD",
-              "value": amount
-            }
-          }
-        ],
-        "amount": {
-          "currency_code": "USD",
-          "value": amount,
-          "breakdown": {
-            "item_total": {
-              "currency_code": "USD",
-              "value": amount
-            }
-          }
-        }
-      }
-    ],
-    "application_context": {
-      "return_url": "https://example.com/return",
-      "cancel_url": "https://example.com/cancel"
-    }
-  };
-}
-
-const capturePayment = (id: any, token = "") => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    fetch(
-      "https://api.sandbox.paypal.com" + `/v2/checkout/orders/${id}/capture`,
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        console.log("result print", result);
-        const res = JSON.parse(result);
-        resolve(res);
-      })
-      .catch((error) => {
-        console.log("error raised", error);
-        reject(error);
-      });
-  });
-};
 
 const CodeTicket = (ballonImage:any, qrCode:any, canLogo:any) => {
   return  `
@@ -148,19 +87,54 @@ const CodeTicket = (ballonImage:any, qrCode:any, canLogo:any) => {
 }
 
 
-const generatePdf = async () => {
+const generatePdf = async (quantityOfTicket:string) => {
   // Charger les images locales
   const ballonImage = Asset.fromModule(require('../../../assets/images/imTicket/ballon.png')).uri;
   const qrCode = Asset.fromModule(require('../../../assets/images/imTicket/qrcode.png')).uri;
   const canLogo = Asset.fromModule(require('../../../assets/images/imTicket/can.png')).uri;
-
-  const file = await Print.printToFileAsync({
-    html: CodeTicket(ballonImage,  qrCode, canLogo),
-    base64: false,
-  });
-
-  await Sharing.shareAsync(file.uri);
+  let quantity = parseInt(quantityOfTicket)
+  let nb:number = 0
+  while( nb < quantity){
+    const file = await Print.printToFileAsync({
+      html: CodeTicket(ballonImage,  qrCode, canLogo),
+      base64: false,
+    });
+    await Sharing.shareAsync(file.uri);
+    nb++
+  }  
 };
+
+// const generatePdf = async () => {
+//   const ballonImage = Asset.fromModule(require('../../../assets/images/imTicket/ballon.png')).uri;
+//   const qrCode = Asset.fromModule(require('../../../assets/images/imTicket/qrcode.png')).uri;
+//   const canLogo = Asset.fromModule(require('../../../assets/images/imTicket/can.png')).uri;
+
+//   const pdfDoc = await PDFLib.PDFDocument.create();
+
+//   let nb = 0;
+//   while (nb < 3) {
+//     const page = pdfDoc.addPage();
+//     const pageContent = CodeTicket(ballonImage, qrCode, canLogo);
+//     await page.drawImage(pageContent, {
+//       x: 0,
+//       y: 0,
+//       width: page.getWidth(),
+//       height: page.getHeight(),
+//     });
+
+//     nb++;
+//   }
+
+//   const pdfBytes = await pdfDoc.save();
+
+//   // Enregistrer et partager le fichier PDF généré
+//   const pdfUri  = FileSystem.cacheDirectory + 'tickets.pdf';
+//   await FileSystem.writeAsStringAsync(pdfUri, pdfBytes, {
+//     encoding: FileSystem.EncodingType.Base64,
+//   });
+//   await Sharing.shareAsync(pdfUri);
+// };
+
 
 const getAccesToken = async (idClient:any, secretClient:any) => {
   const auth = Buffer.from(`${idClient}:${secretClient}`).toString("base64");
@@ -200,7 +174,7 @@ const buyTicketPerOrangeMoney = async(accesTokenOrange:string) => {
   const requestBody = {
     "merchant_key": "a42dca79",
     "currency": "OUV",
-    "order_id": "TestOPE_001903hjvot",
+    "order_id": "TestOPE_0019h03wvvot",
     "amount": 1500,
     "return_url": "http://www.merchant-example.org/return",
     "cancel_url": "http://www.merchant-example.org/cancel",
@@ -230,8 +204,7 @@ try {
 
 
 export { 
-  capturePayment, 
-  DataApiPaypal, 
+
   CodeTicket, 
   generatePdf, 
   getAccesToken, 

@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({
         </Text>
       ) : null}
       <TextInput
-        placeholder=""
+        placeholder="D'abord choisissez un match"
         className={`rounded-lg border border-gray-300 p-2.5 text-sm leading-[18px] text-gray-800 ${
           editable ? 'bg-white' : 'bg-gray-200'
         } ${textInputProps?.className}`}
