@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, Image, ViewStyle } from 'react-native';
+import { View, Text, Image, ViewStyle, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 type RankingProps = {
   group: any;
   showDetailsButton?: boolean;
   containerStyles?: ViewStyle;
   onNavigateToDetails?: () => void;
+  onNavigateToTeam?: () => void;
 };
 
 const Ranking: React.FC<RankingProps> = ({
@@ -15,7 +17,10 @@ const Ranking: React.FC<RankingProps> = ({
   showDetailsButton = false,
   containerStyles = {},
   onNavigateToDetails,
+  onNavigateToTeam,
 }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={[containerStyles]}>
       <View className="flex-row items-center justify-between">
@@ -54,9 +59,10 @@ const Ranking: React.FC<RankingProps> = ({
 
         <View className="divide-y divide-gray-200 rounded-b-xl bg-white shadow-sm">
           {group.teams.map((team: any) => (
-            <View
+            <Pressable
               key={team.code}
               className="flex-row justify-between px-4 py-3"
+              onPress={onNavigateToTeam}
             >
               <View className="mr-2 flex-1 flex-row items-center space-x-3">
                 <View className="rounded-full border border-gray-100">
@@ -84,7 +90,7 @@ const Ranking: React.FC<RankingProps> = ({
                   </Text>
                 </View>
               </View>
-            </View>
+            </Pressable>
           ))}
         </View>
       </View>
