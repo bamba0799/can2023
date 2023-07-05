@@ -3,6 +3,7 @@ import axios from "axios";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { Asset } from "expo-asset";
+// import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib'; 
 
 
 const CodeTicket = (ballonImage:any, qrCode:any, canLogo:any) => {
@@ -86,19 +87,54 @@ const CodeTicket = (ballonImage:any, qrCode:any, canLogo:any) => {
 }
 
 
-const generatePdf = async () => {
+const generatePdf = async (quantityOfTicket:string) => {
   // Charger les images locales
   const ballonImage = Asset.fromModule(require('../../../assets/images/imTicket/ballon.png')).uri;
   const qrCode = Asset.fromModule(require('../../../assets/images/imTicket/qrcode.png')).uri;
   const canLogo = Asset.fromModule(require('../../../assets/images/imTicket/can.png')).uri;
-
-  const file = await Print.printToFileAsync({
-    html: CodeTicket(ballonImage,  qrCode, canLogo),
-    base64: false,
-  });
-
-  await Sharing.shareAsync(file.uri);
+  let quantity = parseInt(quantityOfTicket)
+  let nb:number = 0
+  while( nb < quantity){
+    const file = await Print.printToFileAsync({
+      html: CodeTicket(ballonImage,  qrCode, canLogo),
+      base64: false,
+    });
+    await Sharing.shareAsync(file.uri);
+    nb++
+  }  
 };
+
+// const generatePdf = async () => {
+//   const ballonImage = Asset.fromModule(require('../../../assets/images/imTicket/ballon.png')).uri;
+//   const qrCode = Asset.fromModule(require('../../../assets/images/imTicket/qrcode.png')).uri;
+//   const canLogo = Asset.fromModule(require('../../../assets/images/imTicket/can.png')).uri;
+
+//   const pdfDoc = await PDFLib.PDFDocument.create();
+
+//   let nb = 0;
+//   while (nb < 3) {
+//     const page = pdfDoc.addPage();
+//     const pageContent = CodeTicket(ballonImage, qrCode, canLogo);
+//     await page.drawImage(pageContent, {
+//       x: 0,
+//       y: 0,
+//       width: page.getWidth(),
+//       height: page.getHeight(),
+//     });
+
+//     nb++;
+//   }
+
+//   const pdfBytes = await pdfDoc.save();
+
+//   // Enregistrer et partager le fichier PDF généré
+//   const pdfUri  = FileSystem.cacheDirectory + 'tickets.pdf';
+//   await FileSystem.writeAsStringAsync(pdfUri, pdfBytes, {
+//     encoding: FileSystem.EncodingType.Base64,
+//   });
+//   await Sharing.shareAsync(pdfUri);
+// };
+
 
 const getAccesToken = async (idClient:any, secretClient:any) => {
   const auth = Buffer.from(`${idClient}:${secretClient}`).toString("base64");
@@ -138,7 +174,7 @@ const buyTicketPerOrangeMoney = async(accesTokenOrange:string) => {
   const requestBody = {
     "merchant_key": "a42dca79",
     "currency": "OUV",
-    "order_id": "TestOPE_001903wjvvot",
+    "order_id": "TestOPE_0019h03wvvot",
     "amount": 1500,
     "return_url": "http://www.merchant-example.org/return",
     "cancel_url": "http://www.merchant-example.org/cancel",

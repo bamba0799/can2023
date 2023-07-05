@@ -34,7 +34,6 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
   const [matchs, setMatchs] = useState<any>([])
   
   const [matchPerDate, setMatchPerDate] = useState<any>([{id:"0", date:"", time:""}])
-
   
   const defaultTicketCategory = {id:"0", label:"Ordinaire", value:"1"}
   const [category, setCategory] = useState(defaultTicketCategory)
@@ -61,6 +60,8 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
 
   const [modalRn, setModalRn] = useState(false)
 
+  const [editableDate, setEditableDate] = useState(true)
+
   useEffect(() => { 
     getAccesTokenPaypal().then(res => setAccessTokenPaypal(res.access_token)).catch(err => console.log(err));
     getAccesTokenOrange().then(
@@ -74,18 +75,21 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
 
   },[])
 
-  const payer = async() => {
-   if (paymentMethod.value == "carte") {
+  const payer = () => {
+   if (paymentMethod.value == "carte" && amountTicket !== "NaN" && selectedMatchs.label !== "choissez un match") {
      
       buyTicketPerPaypal(accessTokenPaypal, quantityOfTicket, amountTicketStringusd)
       .then((res:any) => {
         setPaypalUrl(res[0])
       })
 
-    } else if (paymentMethod.value == "money") {
+    } else if (paymentMethod.value == "money" && amountTicket !== "NaN" && selectedMatchs.label !== "choissez un match") {
       buyTicketPerOrangeMoney(accesTokenOrange).then(
         (res) => setOrangeMoneyUrl(res)
         ).catch(err => console.log("erreur de paiement orange"))
+    }
+    else{
+      alert("Remplissez tous les champs")
     }
   }
 
@@ -148,11 +152,13 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
                   setSelectedMatchs(item); 
                   if(item.id==="0"){
                     setMatchPerDate([{id:"0", date:"", time:""}])
+                    setEditableDate(true)
                   }else{
+                    setEditableDate(false)
                     getDatePerMatchs(item.id)
                     .then((res) => setMatchPerDate(res))
                     .catch(err => console.log(err));
-                    console.log(item.id);
+                   
                   }
                     
                 }}
@@ -165,7 +171,7 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
             <View className=" w-1/2">
               <Input
                 label="Date"
-                editable={false}
+                editable={editableDate}
                 containerProps={{ className: 'flex-[1.75] space-y-1' }}
                 textInputProps={{
                   value: dayjs(matchPerDate[0].date).format("dddd DD MMMM YYYY")!=="Invalid Date" ? dayjs(matchPerDate[0].date).format("dddd DD MMMM YYYY"):"",
@@ -264,7 +270,7 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
               <View className="flex-1 items-center justify-center">
                 <Text className="font-bold text-black" style={{ fontSize: 24 }}>Achat effectué avec succès</Text>
                 <View className="mt-5 flex-row space-x-3">
-                  <Button className="bg-black rounded-3xl items-center justify-center p-1" onPress={generatePdf} >
+                  <Button className="bg-black rounded-3xl items-center justify-center p-1" onPress={() => generatePdf(quantityOfTicket)} >
                     <Text className="font-semibold text-white"> Voir le ticket </Text>
                   </Button>
                   <View>

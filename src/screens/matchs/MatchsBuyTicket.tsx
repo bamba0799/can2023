@@ -29,6 +29,8 @@ const MatchsBuyTicket: React.FC<
   const [equipe2, setEquipe2] = useState("");
   const matchStats = data.matchStats;
   const [accessTokenPaypal, setAccessTokenPaypal] = useState<any>("");
+  console.log(accessTokenPaypal);
+  
   const [accesTokenOrange, setAccesTokenOrange] = useState<any>("")
  
 
@@ -282,7 +284,7 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
               <View className="flex-1 items-center justify-center">
                 <Text className="font-bold text-black" style={{ fontSize: 24 }}>Achat effectué avec succès</Text>
                 <View className="mt-5 flex-row space-x-3">
-                  <Button className="bg-black rounded-3xl items-center justify-center p-1" onPress={generatePdf} >
+                  <Button className="bg-black rounded-3xl items-center justify-center p-1" onPress={() => generatePdf(quantityOfTicket)} >
                     <Text className="font-semibold text-white"> Voir le ticket </Text>
                   </Button>
                   <View>
