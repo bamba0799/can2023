@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
@@ -17,7 +16,7 @@ import { Button } from "@components/Button";
 
 const Main: React.FC<
   NativeStackScreenProps<MatchsStackParamList, "Matchs/Main">
-> = () => {
+> = ({navigation}) => {
   const [dates, setDates] = useState<any[]>([]);
   const [matchperdates, setMatchperdates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(0);
@@ -25,9 +24,9 @@ const Main: React.FC<
   dayjs.locale("fr");
   const insets = useSafeAreaInsets();
 
-  const { navigate } = useNavigation(); 
+ 
   const navigateToBuyTicket = (data: any) => {
-    navigate("Matchs/MatchsBuyTicket" as never, data as never);
+    navigation.navigate("Matchs/MatchsBuyTicket" as never, data as never);
   };
   const handleRedirect = () => {
     if (Platform.OS === "android") {
