@@ -80,12 +80,18 @@ NativeStackScreenProps<BuyTicketsStackParamList, "BuyTickets/Main">
      
       buyTicketPerPaypal(accessTokenPaypal, quantityOfTicket, amountTicketStringusd)
       .then((res:any) => {
-        setPaypalUrl(res[0])
+         navigation.navigate(
+          'BuyTickets/BuyTicketAction/PaymentPaypalOnWeb',
+           {url:res[0], quantityOfTicket:quantityOfTicket, accessTokenPaypal:accessTokenPaypal}
+          )
       })
 
     } else if (paymentMethod.value == "money" && amountTicket !== "NaN" && selectedMatchs.label !== "choissez un match") {
       buyTicketPerOrangeMoney(accesTokenOrange).then(
-        (res) => setOrangeMoneyUrl(res)
+        (res) => {
+          // setOrangeMoneyUrl(res);
+          navigation.navigate('BuyTickets/BuyTicketAction/PaymentOrangeOnWeb', {url:res})
+        }
         ).catch(err => console.log("erreur de paiement orange"))
     }
     else{

@@ -169,12 +169,12 @@ const getAccesTokenOrange = async() => {
   )
   return response.data.access_token
 }
-
+// TestOPE_0019h01gvot
 const buyTicketPerOrangeMoney = async(accesTokenOrange:string) => {
   const requestBody = {
     "merchant_key": "a42dca79",
     "currency": "OUV",
-    "order_id": "TestOPE_0019h03wvvot",
+    "order_id": `${accesTokenOrange}`+"bb",
     "amount": 1500,
     "return_url": "http://www.merchant-example.org/return",
     "cancel_url": "http://www.merchant-example.org/cancel",

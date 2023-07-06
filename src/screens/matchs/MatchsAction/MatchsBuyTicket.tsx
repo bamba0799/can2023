@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, Modal, TouchableOpacity, StyleSheet} from "react-native";
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet} from "react-native";
+import { Ionicons, } from '@expo/vector-icons';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useRoute } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MatchsStackParamList } from "@navigation/app/home/matchs/types";
-import WebView from "react-native-webview";
-import queryString from "query-string";
 import dayjs from "dayjs";
 import { Header } from "@components/Header";
-import {getAccesTokenPaypal, buyTicketPerPaypal, paymentSucess} from "../../../src/api/paypal"
-import { generatePdf, getAccesTokenOrange, buyTicketPerOrangeMoney} from "./api/index";
-
-
+import {getAccesTokenPaypal, buyTicketPerPaypal} from "../../../../src/api/paypal"
+import { getAccesTokenOrange, buyTicketPerOrangeMoney} from "../api/index";
 
 const MatchsBuyTicket: React.FC<
   NativeStackScreenProps<MatchsStackParamList, "Matchs/MatchsBuyTicket">
@@ -22,20 +18,13 @@ const MatchsBuyTicket: React.FC<
   dayjs.locale("fr");
   const data = useRoute().params as any;
 
- 
-
   const matchsdate = dayjs(data.matchsdate).format("dddd DD MMMM YY");
   const [equipe1, setEquipe1] = useState("");
   const [equipe2, setEquipe2] = useState("");
   const matchStats = data.matchStats;
   const [accessTokenPaypal, setAccessTokenPaypal] = useState<any>("");
-  console.log(accessTokenPaypal);
   
   const [accesTokenOrange, setAccesTokenOrange] = useState<any>("")
- 
-
-  const [paypalUrl, setPaypalUrl] = useState<any>(null);
-  const [orangeMoneyUrl, setOrangeMoneyUrl] = useState<any>(null)
 
   const [quantityOfTicket, setQuantityOfTicket] = React.useState("1");
   const numberInt = parseInt(quantityOfTicket) * 2000;
@@ -49,17 +38,13 @@ const MatchsBuyTicket: React.FC<
     defaultTicketCategory,
     {id: "1",label:"VIP", value:"2"},
   ]
-const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
+  const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
 
- const paymentMethodData = [
+  const paymentMethodData = [
   defaultPaymentMethod,
   {id:"1", label: "Carte bancaire", value: "carte" },
   ]
   const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod);
-
-  const [modalAn, setModalAn] = useState(false)
-
-  const [modalRn, setModalRn] = useState(false)
 
   useEffect(() => {
     matchStats.map((equipe: any, index: number) => {
@@ -74,10 +59,7 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
     getAccesTokenPaypal().then(res => setAccessTokenPaypal(res.access_token)).catch(err => console.log(err));
     getAccesTokenOrange().then(
       (res) => setAccesTokenOrange(res)
-
       ).catch(err => console.log(err))
-      
-
   }, []);
 
   const payer = () => {
@@ -87,54 +69,21 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
       if (paymentMethod.value == "carte") {
      
         buyTicketPerPaypal(accessTokenPaypal, quantityOfTicket, amountTicketStringusd)
-        .then((res:any) => {
-          console.log("l'url est ",res[0]); setPaypalUrl(res[0])
+        .then((res:any) => { 
+           navigation.navigate(
+            'Matchs/MatchsActions/PaymentPaypalOnWeb', 
+            {url:res[0], accessToken:accessTokenPaypal, quantityOfTicket:quantityOfTicket}
+            )
         })
-  
       } else if (paymentMethod.value == "money") {
         buyTicketPerOrangeMoney(accesTokenOrange).then(
-          (res) => setOrangeMoneyUrl(res)
+          (res) => { navigation.navigate('Matchs/MatchsActions/PaymentOrangeOnWeb', {url:res}); console.log("token orange", accesTokenOrange) }
           ).catch(err => console.log("erreur de paiement orange"))
       }
     }
-    
-   
   }
-
-  const onUrlChangePaypal = (webviewState: any) => {
-    console.log("le webviewState est", webviewState)
-    if (webviewState.url.includes("https://example.com/cancel")) {
-      clearPaypalState()
-      setModalAn(true)
-    }
-    else if (webviewState.url.includes("https://example.com/return")) {
-      const urlValues = queryString.parseUrl(webviewState.url)
-      console.log("mon url est value de bamba Mabo est ", urlValues)
-      const { token } = urlValues.query
-      console.log(token)
-        paymentSucess(token, accessTokenPaypal).then((res:any) => {
-          console.log("la response final est ", res);
-        })
-       
-        setModalRn(true);
-        clearPaypalState()
-
- 
-    }
-  }
-
-  const clearPaypalState = () => {
-    setPaypalUrl(null)
-    setAccessTokenPaypal(null)
-// on genere encore le token
-    getAccesTokenPaypal().then(res => setAccessTokenPaypal(res.access_token)).catch(err => console.log(err));
-   
-  }
-
   const matchsConfrontation = equipe1 + " - " + equipe2;
-
   return (
-   
       <View
         className="w-full "
       >
@@ -195,8 +144,6 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
                
               />
               </View>
-            
-            
             <View className=" w-1/2 ">
                 <Input
                   label="Nombre"
@@ -242,59 +189,13 @@ const defaultPaymentMethod = {id:"0",label: "Orange money", value: "money" }
                 )}
                
               />
-
             </View>
           </View>
           <View className="mt-6">
-          
-
-          <Button className="mt-8 flex-row items-center justify-center rounded-lg bg-black"onPress={() => payer()}  >
-            <Text  className="p-3 text-center font-[semiBold] text-sm text-white"> Procéder au paiement</Text>
-            <Ionicons  name="ios-arrow-forward" size={14}  color="white" />
-          </Button>
-
-            {/* paiement sur paypal web */}
-            <Modal visible={!!paypalUrl}>
-              <TouchableOpacity onPress={clearPaypalState} className="mt-10 ml-3">
-                <Text className="text-xl text-blue-500 font-medium">Retour</Text>
-              </TouchableOpacity> 
-              <View className="flex-1">
-                <WebView source={{ uri: paypalUrl }} onNavigationStateChange={onUrlChangePaypal} />
-              </View>
-            </Modal>
-            {/* paiement orange money pour le web */}
-            <Modal visible={!!orangeMoneyUrl}>
-              <TouchableOpacity  className="mt-10 ml-3">
-                
-              </TouchableOpacity>
-              <View className="flex-1">
-                <WebView source={{ uri: orangeMoneyUrl }} onNavigationStateChange={onUrlChangePaypal} />
-              </View>
-            </Modal>
-
-            <Modal visible={!!modalAn}>
-              <View className="flex-1 justify-center items-center">
-                {/* <Pressable className="self-start rounded-full bg-icon px-2 py-2" onPress={navigation.goBack} >
-                        <BackIcon width={18} height={18} />
-                      </Pressable> */}
-                <Text className="text-2xl">Paiement annulé</Text>
-              </View>
-            </Modal>
-            <Modal visible={!!modalRn}>
-              <View className="flex-1 items-center justify-center">
-                <Text className="font-bold text-black" style={{ fontSize: 24 }}>Achat effectué avec succès</Text>
-                <View className="mt-5 flex-row space-x-3">
-                  <Button className="bg-black rounded-3xl items-center justify-center p-1" onPress={() => generatePdf(quantityOfTicket)} >
-                    <Text className="font-semibold text-white"> Voir le ticket </Text>
-                  </Button>
-                  <View>
-                    <Pressable className="self-start rounded-full bg-gray-200 px-2 py-2" >
-                      <AntDesign color={"black"} name="home" size={24}  />
-                    </Pressable>
-                  </View>
-                </View>
-              </View>
-            </Modal>
+            <Button className="mt-8 flex-row items-center justify-center rounded-lg bg-black"onPress={() => payer()}  >
+              <Text  className="p-3 text-center font-[semiBold] text-sm text-white"> Procéder au paiement</Text>
+              <Ionicons  name="ios-arrow-forward" size={14}  color="white" />
+            </Button>
           </View>
         </View>
       </View>
