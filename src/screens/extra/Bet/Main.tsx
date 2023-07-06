@@ -25,9 +25,7 @@ export const Main: React.FC<
   };
 
   // État pour stocker la date sélectionnée
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [matche, setMatche] = useState<any>();
-  console.log(matche);
+  const [selectedDate, setSelectedDate] = useState<any>(null);
 
   // Données des matchs
   const matchData = [
@@ -88,14 +86,22 @@ export const Main: React.FC<
       ],
     },
   ];
+  const [matche, setMatche] = useState<any>(matchData[0].matches);
+  console.log(matche);
 
   // Fonction appelée lorsqu'une date est cliquée
   const handleDatePress = (date: any) => {
     setSelectedDate(date);
     const matchPd = matchData.filter((mat: any) => mat.date === date);
+    const mat = matchPd[0].matches;
 
-    setMatche(matchPd);
+    setMatche(mat);
   };
+
+  useEffect(() => {
+    setSelectedDate(matchData[0].date);
+    setMatche(matchData[0].matches);
+  }, []);
   return (
     <View className="flex-1">
       <Header
@@ -163,7 +169,7 @@ export const Main: React.FC<
             </View>
 
             <View className="  w-full  items-center  space-y-6 rounded-xl rounded-t-3xl border-t-8 border-t-orange-500  bg-white py-4">
-              {matchData.map((ma: any) => (
+              {matche.map((ma: any) => (
                 <View
                   key={ma.date}
                   className="flex w-full flex-row items-end justify-center"
@@ -172,24 +178,22 @@ export const Main: React.FC<
                     <Image
                       className="h-10 w-10"
                       source={{
-                        uri: `${ma.matches[0].lien1}`,
+                        uri: `${ma.lien1}`,
                       }}
                     />
-                    <Text className=" py-1 font-bold">
-                      {ma.matches[0].homeTeam}
-                    </Text>
+                    <Text className=" py-1 font-bold">{ma.homeTeam}</Text>
                     <TouchableOpacity className="w-16 items-center rounded-xl border bg-gray-600 p-2">
                       <Text className="font-extrabold text-white">
-                        x{ma.matches[0].cotehomeTeam}
+                        x{ma.cotehomeTeam}
                       </Text>
                     </TouchableOpacity>
                   </View>
                   <View className="flex  flex-1 items-center ">
-                    <Text>{ma.matches[0].time}</Text>
+                    <Text>{ma.time}</Text>
                     <Text className=" py-1 font-bold">Nul</Text>
                     <TouchableOpacity className="w-16 items-center rounded-xl border bg-gray-600 p-2">
                       <Text className="font-extrabold text-white">
-                        x{ma.matches[0].coteNull}
+                        x{ma.coteNull}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -197,15 +201,13 @@ export const Main: React.FC<
                     <Image
                       className="h-10 w-10"
                       source={{
-                        uri: `${ma.matches[0].liensAway}`,
+                        uri: `${ma.liensAway}`,
                       }}
                     />
-                    <Text className=" py-1 font-bold">
-                      {ma.matches[0].awayTeam}
-                    </Text>
+                    <Text className=" py-1 font-bold">{ma.awayTeam}</Text>
                     <TouchableOpacity className="w-16 items-center rounded-xl border bg-gray-600 p-2">
                       <Text className="font-extrabold text-white">
-                        x{ma.matches[0].coteawayTeam}
+                        x{ma.coteawayTeam}
                       </Text>
                     </TouchableOpacity>
                   </View>

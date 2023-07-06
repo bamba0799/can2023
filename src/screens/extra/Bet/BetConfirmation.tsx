@@ -173,7 +173,7 @@ export const BetConfirmation: React.FC<
             <Text className="text-sm font-medium">Cote</Text>
           </View>
 
-          <TouchableOpacity className=" m-2 mx-auto h-12 w-24 flex-1 flex-row items-center justify-center rounded-md bg-orange-500 p-0.5">
+          <TouchableOpacity className=" m-2 mx-auto h-12  flex-1 flex-row items-center justify-center rounded-md bg-orange-500 p-0.5">
             <Text className="text-xl font-semibold text-white">
               Placer un pari ✅
             </Text>
