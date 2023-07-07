@@ -14,6 +14,7 @@ import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
 import { Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Badge } from '@components/Badge';
 
 export const Main: React.FC<
   NativeStackScreenProps<BetStackParamList, 'Bet/Main'>
@@ -141,7 +142,7 @@ export const Main: React.FC<
                 <TouchableOpacity
                   key={matchDate.date}
                   activeOpacity={0.7}
-                  className={`h-10 w-28 items-center justify-center rounded-full border border-primary px-3  ${
+                  className={`h-8 w-20 items-center justify-center rounded-full border border-primary px-3  ${
                     matchDate.date === selectedDate
                       ? 'bg-primary'
                       : 'bg-transparent'
