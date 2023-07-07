@@ -7,6 +7,15 @@ import {
   Pressable,
   Image,
 } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+  Image,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BetStackParamList } from './types';
 import { Header } from '@components/Header';
@@ -103,9 +112,94 @@ export const Main: React.FC<
     setSelectedDate(matchData[0].date);
     setMatche(matchData[0].matches);
   }, []);
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handlePress = () => {
+    setIsSelected(!isSelected);
+  };
+
+  // État pour stocker la date sélectionnée
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+
+  // Données des matchs
+  const matchData = [
+    {
+      date: '2023-06-20',
+
+      matches: [
+        {
+          id: 1,
+          homeTeam: 'BENIN',
+          awayTeam: 'TOGO',
+          time: '12:00',
+          cotehomeTeam: '0.25',
+          coteNull: '2.81',
+          coteawayTeam: '3.18',
+          lien1: 'https://i.skyrock.net/0705/5300705/pics/2613089914_1.jpg',
+          liensAway:
+            'https://cdn.footballkitarchive.com/2021/10/10/pzGsAiDj0G2YuWR.jpg',
+        },
+      ],
+    },
+    {
+      date: '2023-06-21',
+
+      matches: [
+        {
+          id: 3,
+          homeTeam: 'MALI',
+          awayTeam: 'NIGER',
+          time: '15:00',
+          cotehomeTeam: '1.5',
+          coteNull: '1.',
+          coteawayTeam: '0.14',
+          lien1:
+            'https://cdn.footballkitarchive.com/2022/02/27/UBbMXkEaf2A2tv1.jpg',
+          liensAway:
+            'https://cdn.footballkitarchive.com/2022/12/15/vQLTT4c1NWWd6L8.jpg',
+        },
+      ],
+    },
+    {
+      date: '2023-06-22',
+
+      matches: [
+        {
+          id: 5,
+          homeTeam: 'SENEGAL',
+          awayTeam: 'ALGERIE',
+          time: '9:00',
+          cotehomeTeam: '1.6',
+          coteawayTeam: '3.18',
+          coteNull: '0.18',
+          lien1:
+            'https://cdn.footballkitarchive.com/2021/04/09/LxgX3VwjsDoJ1uK.jpg',
+          liensAway:
+            'https://cdn.footballkitarchive.com/2023/02/13/R9UduMmdg0bMI51.jpg',
+        },
+      ],
+    },
+  ];
+  const [matche, setMatche] = useState<any>(matchData[0].matches);
+  console.log(matche);
+
+  // Fonction appelée lorsqu'une date est cliquée
+  const handleDatePress = (date: any) => {
+    setSelectedDate(date);
+    const matchPd = matchData.filter((mat: any) => mat.date === date);
+    const mat = matchPd[0].matches;
+
+    setMatche(mat);
+  };
+
+  useEffect(() => {
+    setSelectedDate(matchData[0].date);
+    setMatche(matchData[0].matches);
+  }, []);
   return (
     <View className="flex-1">
       <Header
+        title="Parier pour des lots 🥳"
         title="Parier pour des lots 🥳"
         showBackIcon
       />

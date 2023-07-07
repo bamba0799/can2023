@@ -1,14 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import {View,Text,ScrollView,Image,Pressable,TouchableOpacity, Linking, Platform} from "react-native";
-import { RegularButton } from "@components/Buttons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { PlayIcon } from "../../components/Icons";
 import { Ionicons } from '@expo/vector-icons';
 import { MatchsStackParamList } from "@navigation/app/home/matchs/types";
 import { API_BASE_URL } from "@env";
@@ -19,7 +16,7 @@ import { Button } from "@components/Button";
 
 const Main: React.FC<
   NativeStackScreenProps<MatchsStackParamList, "Matchs/Main">
-> = () => {
+> = ({navigation}) => {
   const [dates, setDates] = useState<any[]>([]);
   const [matchperdates, setMatchperdates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(0);
@@ -27,9 +24,9 @@ const Main: React.FC<
   dayjs.locale("fr");
   const insets = useSafeAreaInsets();
 
-  const { navigate } = useNavigation(); 
+ 
   const navigateToBuyTicket = (data: any) => {
-    navigate("Matchs/MatchsBuyTicket" as never, data as never);
+    navigation.navigate("Matchs/MatchsBuyTicket" as never, data as never);
   };
   const handleRedirect = () => {
     if (Platform.OS === "android") {
@@ -233,9 +230,9 @@ const Main: React.FC<
                     <View className="">
                       <Pressable
                         onPress={() => navigateToBuyTicket({ matchStats: matchperdate.matchStats, matchsdate: matchperdate.date})}
-                        className="mt-5 rounded-full bg-black p-2 px-3"
+                        className="mt-5 rounded-full bg-black p-2 px-2"
                       >
-                        <Text className="text-[11px] font-bold text-white"> Acheter Ticket</Text>
+                        <Text className="text-[8px] font-bold text-white"> Acheter Ticket</Text>
                       </Pressable>
                     </View>
                   )}

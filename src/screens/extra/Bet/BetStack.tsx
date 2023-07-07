@@ -6,6 +6,7 @@ import {
 import { BetStackParamList } from './types';
 import { ExtraStackParamList } from '@navigation/app/home/extra/types';
 import { Main } from './Main';
+import { BetConfirmation } from './BetConfirmation';
 
 const Stack = createNativeStackNavigator<BetStackParamList>();
 
@@ -17,6 +18,10 @@ const BetStack: React.FC<
       <Stack.Screen
         name="Bet/Main"
         component={Main}
+      />
+      <Stack.Screen
+        name="Bet/BetConfirmation"
+        component={BetConfirmation}
       />
     </Stack.Navigator>
   );

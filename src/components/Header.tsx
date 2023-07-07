@@ -17,7 +17,7 @@ const Header = ({
   className,
   showProfile = true,
   onNavigateBack,
-  onNavigateToProfile,
+  onNavigateToProfile, 
   ...props
 }: HeaderProps) => {
   const insets = useSafeAreaInsets();
