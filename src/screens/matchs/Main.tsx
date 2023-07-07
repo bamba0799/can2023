@@ -101,7 +101,7 @@ const Main: React.FC<
                     }}
                   >
                     <Text
-                      className={`font-medium text-primary-orange ${
+                      className={`font-medium ${
                         daat.id === selectedDate
                           ? "text-white"
                           : "text-primary"
