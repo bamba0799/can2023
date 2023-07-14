@@ -8,7 +8,7 @@ import { FavTeams } from '@screens/extra/FavTeams';
 import { About } from '@screens/extra/About';
 import { StadiumsStacks } from '../stadiums';
 import { BuyTicketsStack } from '../buyTickets';
-import { Game } from '@screens/extra/Game';
+import { Game } from '@screens/extra/game';
 import { BetStack } from '@screens/extra/Bet';
 
 const Stack = createNativeStackNavigator<ExtraStackParamList>();
