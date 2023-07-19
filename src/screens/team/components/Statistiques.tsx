@@ -9,8 +9,8 @@ type PropStatistique = {
 
 const Statistiques: React.FC<PropStatistique> = ({name}) => {
   return (
-    <View>
-      <Text>{name}</Text>
+    <View className='mt-4'>
+      <Text className='font-[extraBold] text-lg text-primary'>{name}</Text>
     </View>
   );
 };

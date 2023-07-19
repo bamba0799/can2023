@@ -46,19 +46,13 @@ export default function Team() {
         showBackIcon
       />
 
-      <View className="">
-        <ImageBackground
-          className="h-36 w-full object-cover object-center opacity-30"
-          source={{
-            uri: team_flag,
-          }}
+      <View className="h-[164px] w-full bg-gray-300">
+        <Image
+          source={{ uri: team_flag }}
+          className="absolute z-[99] h-full w-full rounded-xl"
+          resizeMode="cover"
         />
-        <View className="absolute left-40 top-11 flex flex-col items-center justify-center bg-orange-200 p-2 text-white">
-          <Text className="text-white">{team_name}</Text>
-          <Text className="uppercase text-white">
-            Groupe {team_group.label}
-          </Text>
-        </View>
+       
       </View>
       <View className="mt-3 w-full ">
         <ScrollView
