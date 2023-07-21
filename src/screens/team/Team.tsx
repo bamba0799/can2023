@@ -18,9 +18,11 @@ import React, { useEffect, useState } from 'react';
 import { Badge } from '@components/Badge';
 
 export default function Team() {
+
   const { params: team } = useRoute();
 
   const {
+    id,
     name: team_name,
     code: team_code,
     flag: team_flag,
@@ -46,19 +48,12 @@ export default function Team() {
         showBackIcon
       />
 
-      <View className="">
-        <ImageBackground
-          className="h-36 w-full object-cover object-center opacity-30"
-          source={{
-            uri: team_flag,
-          }}
+      <View className="flex h-[200px]  w-full ">
+        <Image
+          source={{ uri: team_flag }}
+          className="  w-full h-full "
+          resizeMode="stretch"
         />
-        <View className="absolute left-40 top-11 flex flex-col items-center justify-center bg-orange-200 p-2 text-white">
-          <Text className="text-white">{team_name}</Text>
-          <Text className="uppercase text-white">
-            Groupe {team_group.label}
-          </Text>
-        </View>
       </View>
       <View className="mt-3 w-full ">
         <ScrollView
@@ -93,11 +88,11 @@ export default function Team() {
       </View>
       <View>
         {selectedOnglet.name === "Vue d'ensemble" ? (
-          <VueEnsemble name="Vue d'ensemble" />
+          <VueEnsemble name="Vue d'ensemble" teamId={id} />
         ) : selectedOnglet.name === 'Matchs' ? (
           <Matchs name="Matchs" />
         ) : selectedOnglet.name === 'Effectif' ? (
-          <Effectif name="Effectifs" />
+          <Effectif name="Effectifs" teamId={id} />
         ) : (
           <Statistiques name="PropStatistique" />
         )}
