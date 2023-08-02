@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StagesStackParamsList } from '@navigation/app/home/stages/types';
 import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
@@ -8,12 +14,21 @@ import stagesTabItems from '@data/stagesTabItems';
 import { Badge } from '@components/Badge';
 import { Header } from '@components/Header';
 import { Ranking } from './components/Ranking';
+import { useRefreshOnFocus } from '@hooks/api';
+import { fetchAllGroups } from './api';
 
 const Main: React.FC<
   NativeStackScreenProps<StagesStackParamsList, 'Stages/Main'>
 > = ({ navigation, route }) => {
-  const { data: groups, status } = useFetchAllGroups();
+  const {
+    data: groups,
+    status,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = useFetchAllGroups();
   const [activeTabID, setActiveTabID] = useState(1);
+  useRefreshOnFocus(fetchAllGroups);
 
   if (status !== 'success') {
     return (
@@ -34,6 +49,12 @@ const Main: React.FC<
       <ScreenContentLayout
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 16 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetch}
+          />
+        }
       >
         <View>
           <ScrollView

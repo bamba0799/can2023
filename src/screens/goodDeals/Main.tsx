@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GoodDealsStackParamList } from '@navigation/app/home/goodDeals/types';
@@ -10,6 +10,7 @@ import { ScreenLoader } from '@components/ScreenLoader';
 import { Promotions } from './components/Promotions';
 import { POITabLabelList } from './components/POITabLabelList';
 import { POIList } from './components/POIList';
+import { useRefreshOnFocus } from '@hooks/api/refetch';
 
 const Main: React.FC<
   NativeStackScreenProps<GoodDealsStackParamList, 'GoodDeals/Main'>
@@ -19,6 +20,9 @@ const Main: React.FC<
   const [isPOISetsLoading, setIsPOISetsLoading] = useState<boolean>(false);
   const tabLabelListQuery = useCategories();
   const goodDealQuery = useGoodDeals();
+  useRefreshOnFocus(() =>
+    Promise.all([goodDealQuery.refetch, tabLabelListQuery.refetch])
+  );
 
   const getInitialPOISets = async () => {
     setIsPOISetsLoading(true);
@@ -74,6 +78,19 @@ const Main: React.FC<
           paddingHorizontal: 0,
           paddingBottom: 32,
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={
+              tabLabelListQuery.isRefetching || goodDealQuery.isRefetching
+            }
+            onRefresh={async () => {
+              await Promise.all([
+                tabLabelListQuery.refetch,
+                goodDealQuery.refetch,
+              ]);
+            }}
+          />
+        }
       >
         <Promotions
           isLoading={goodDealQuery.isLoading}

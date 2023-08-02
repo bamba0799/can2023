@@ -49,7 +49,7 @@ const App = () => {
         return setIsGettingUser(false);
       }
 
-      tokens = JSON.parse(tokensAsString);      
+      tokens = JSON.parse(tokensAsString);
 
       const { data, status } = await getUser(tokens.accessToken);
 
@@ -78,7 +78,7 @@ const App = () => {
       }
 
       // await removeItem(); Remove that later
-      
+
       setIsAppLoading(false);
     } catch (e: any) {
       console.log(e.message);
@@ -132,7 +132,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <SafeAreaProvider>
-          {user ? <AppStack /> : <AuthStack />}
+          {!user ? <AppStack /> : <AuthStack />}
         </SafeAreaProvider>
         <StatusBar style="auto" />
       </NavigationContainer>
