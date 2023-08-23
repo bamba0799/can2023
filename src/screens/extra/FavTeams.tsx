@@ -143,58 +143,58 @@ const FavTeams: React.FC<
 
         {/* Current team list */}
         <View className="mt-6 rounded-xl border-gray-300/60">
-          {currentTeams.map((team: any, idx: number, arr: any[]) => (
-            <View
-              key={team.id}
-              className={`flex-row items-center justify-between ${
-                idx === arr.length - 1 ? '' : 'border-b border-gray-300/60'
-              } py-1.5`}
-            >
-              <View className="flex-row items-center space-x-3">
-                <View className="rounded-full border border-gray-200">
-                  <Image
-                    source={{ uri: team.flag }}
-                    className="h-8 w-8 rounded-full"
-                    resizeMode="cover"
-                  />
+          {currentTeams.map((team: any, idx: number, arr: any[]) => {
+            return (
+              <View
+                key={team.id}
+                className={`flex-row items-center justify-between ${idx === arr.length - 1 ? '' : 'border-b border-gray-300/60'
+                  } py-1.5`}
+              >
+                <View className="flex-row items-center space-x-3">
+                  <View className="rounded-full border border-gray-200">
+                    <Image
+                      source={{ uri: team.flag }}
+                      className="h-8 w-8 rounded-full"
+                      resizeMode="cover"
+                    />
+                  </View>
+                  <Text>
+                    {team.name} ({team.code})
+                  </Text>
                 </View>
-                <Text>
-                  {team.name} ({team.code})
-                </Text>
-              </View>
 
-              {team.users.find((u: any) => u.id === user?.id) ? (
-                <Button
-                  className={`w-24 flex-row items-center justify-center space-x-1.5 rounded-full border bg-black px-3 py-[6px]`}
-                  onPress={() => onUnfollow(team)}
-                >
-                  <Text className="text-xs font-semibold text-white">
-                    Suivi
-                  </Text>
-                  <Ionicons
-                    name="ios-checkmark-outline"
-                    size={14}
-                    color="white"
-                  />
-                </Button>
-              ) : (
-                <Button
-                  className={`w-24 flex-row items-center justify-center space-x-1 rounded-full border bg-transparent px-3 py-[6px] ${
-                    selectedTeam.id === team.id ? '' : ''
-                  }`}
-                  onPress={() => onFollow(team)}
-                >
-                  <Text className="text-xs font-semibold text-black">
-                    Suivre
-                  </Text>
-                  <Ionicons
-                    name="ios-add-outline"
-                    size={14}
-                  />
-                </Button>
-              )}
-            </View>
-          ))}
+                {team.followingUsers.find((u: any) => u.id === user?.id) ? (
+                  <Button
+                    className={`w-24 flex-row items-center justify-center space-x-1.5 rounded-full border bg-black px-3 py-[6px]`}
+                    onPress={() => onUnfollow(team)}
+                  >
+                    <Text className="text-xs font-semibold text-white">
+                      Suivi
+                    </Text>
+                    <Ionicons
+                      name="ios-checkmark-outline"
+                      size={14}
+                      color="white"
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    className={`w-24 flex-row items-center justify-center space-x-1 rounded-full border bg-transparent px-3 py-[6px] ${selectedTeam.id === team.id ? '' : ''
+                      }`}
+                    onPress={() => onFollow(team)}
+                  >
+                    <Text className="text-xs font-semibold text-black">
+                      Suivre
+                    </Text>
+                    <Ionicons
+                      name="ios-add-outline"
+                      size={14}
+                    />
+                  </Button>
+                )}
+              </View>
+            )
+          })}
         </View>
       </ScreenContentLayout>
     </View>

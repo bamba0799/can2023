@@ -1,19 +1,19 @@
-import React from 'react';
 import { ScrollView, ScrollViewProps } from 'react-native';
 
 interface ScreenContentLayoutProps extends ScrollViewProps {
   children: React.ReactNode;
 }
 
-const ScreenContentLayout: React.FC<ScreenContentLayoutProps> = ({
+export const ScreenContentLayout: React.FC<ScreenContentLayoutProps> = ({
   children,
   ...props
 }) => {
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 16,
-        flex: 1,
+        paddingTop: 12,
+        paddingBottom: 32,
       }}
       {...props}
     >
@@ -22,4 +22,4 @@ const ScreenContentLayout: React.FC<ScreenContentLayoutProps> = ({
   );
 };
 
-export { ScreenContentLayout };
+

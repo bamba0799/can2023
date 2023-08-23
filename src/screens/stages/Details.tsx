@@ -20,7 +20,7 @@ const Details: React.FC<
           <Ranking group={group} />
 
           <Text className="text-primary-orange mt-8 font-bold">
-            Lundi, 10 Avril 2024
+            Lundi, 11 Avril 2024
           </Text>
 
           <View

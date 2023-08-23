@@ -6,30 +6,32 @@ export type GoodDealsQueryParam = {
   status: 'vip' | 'regular';
 };
 
-const GB_RESOURCE_PATH = API_BASE_URL + '/extra/good-deals';
-const POI_RESOURCE_PATH = API_BASE_URL + '/extra/poi';
+const EXTRA_API_URL = API_BASE_URL + '/extra';
 
 // API calls
 export const getGoodDeals = async () => {
+  const GB_RESOURCE_PATH = EXTRA_API_URL + '/good-deals';
   const { data } = await axiosInstance.get(GB_RESOURCE_PATH);
   return data;
 };
 
 export const getVIP = async () => {
-  const URL = POI_RESOURCE_PATH + '?status=vip&limit=3';
+  const URL = EXTRA_API_URL + '/spot-category?status=vip';
   const { data } = await axiosInstance.get<any[]>(URL);
   return data;
 };
 
 export const getPOIByCategory = async (id: string) => {
-  const URL = POI_RESOURCE_PATH + '/byCategory/' + id;
+  const URL =
+    EXTRA_API_URL + `/spot-category/${id}?fields=id,label,spots,photo`;
   const { data, statusText } = await axiosInstance.get<any[]>(URL);
   return data;
 };
 
 export const getCategories = async () => {
   const { data, status } = await axiosInstance.get<any[]>(
-    POI_RESOURCE_PATH + '/categories'
+    EXTRA_API_URL + '/spot-category?fields=id,label,spots,photo'
   );
+  if (status !== 200) throw data;
   return data;
 };

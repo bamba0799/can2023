@@ -1,11 +1,5 @@
-import { useState } from 'react';
-import {
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StagesStackParamsList } from '@navigation/app/home/stages/types';
 import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
@@ -16,6 +10,8 @@ import { Header } from '@components/Header';
 import { Ranking } from './components/Ranking';
 import { useRefreshOnFocus } from '@hooks/api';
 import { fetchAllGroups } from './api';
+import { ScreenLoader } from '@components/ScreenLoader';
+import { Center } from '@components/Center';
 
 const Main: React.FC<
   NativeStackScreenProps<StagesStackParamsList, 'Stages/Main'>
@@ -23,31 +19,39 @@ const Main: React.FC<
   const {
     data: groups,
     status,
-    isLoading,
     isRefetching,
     refetch,
   } = useFetchAllGroups();
-  const [activeTabID, setActiveTabID] = useState(1);
   useRefreshOnFocus(fetchAllGroups);
 
+  const groupLabels = useMemo(() => {
+    return groups?.map((group) => group.id);
+  }, [groups]);
+
+  const [activeTabID, setActiveTabID] = useState(groupLabels?.at(0));
+
+  useEffect(() => {
+    setActiveTabID(groups?.at(0))
+  }, [groupLabels, groups]);
+
   if (status !== 'success') {
-    return (
-      <View className="flex-1 items-center justify-center">
-        {status === 'loading' ? (
-          <ActivityIndicator />
-        ) : (
-          <Text>Erreur lors du chargement.</Text>
-        )}
-      </View>
+    return status === 'loading' ? (
+      <ScreenLoader />
+    ) : (
+      <Center>
+        <Text>Erreur lors du chargement.</Text>
+      </Center>
     );
   }
 
   return (
     <View className="flex-1">
-      <Header title="Phases" />
+      <Header
+        title="Phases"
+        showProfile={false}
+      />
 
       <ScreenContentLayout
-        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 16 }}
         refreshControl={
           <RefreshControl
@@ -69,7 +73,10 @@ const Main: React.FC<
               <Badge
                 key={id}
                 title={label}
-                isSelected={id === activeTabID}
+                isSelected={id === 1} // TODO:  CHANGE
+                style={{
+                  opacity: id !== 1 ? 0.2 : 1
+                }}
               />
             ))}
           </ScrollView>
@@ -80,7 +87,7 @@ const Main: React.FC<
           style={{ gap: 32 }}
         >
           {groups?.map((group: any, i: number) =>
-            group.teams.length > 0 ? (
+            group.teams?.length > 0 ? (
               <Ranking
                 key={group.id}
                 group={group}

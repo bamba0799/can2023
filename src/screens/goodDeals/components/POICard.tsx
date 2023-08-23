@@ -40,13 +40,13 @@ const POICard: React.FC<POICardProps> = ({ data }) => {
   return (
     <Pressable
       className="w-full space-y-2"
-      onPress={() => navigation.navigate('GoodDeals/Details', data)}
+    // onPress={() => navigation.navigate('GoodDeals/Details', data)}
     >
       <View className="h-[164px] w-full overflow-hidden rounded-2xl">
-        <View className="h-full w-full bg-gray-300" />
+        <View className="relative h-full w-full bg-gray-300" />
         <Image
-          source={{ uri: data.images[0].url }}
-          className="absolute z-[99] h-full w-full rounded-2xl"
+          source={{ uri: data.photo }}
+          className="absolute z-50 h-full w-full rounded-2xl"
           resizeMode="cover"
         />
       </View>

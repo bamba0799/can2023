@@ -1,114 +1,171 @@
-import { useEffect, useState } from 'react';
-import { RefreshControl, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GoodDealsStackParamList } from '@navigation/app/home/goodDeals/types';
-import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
-import { useCategories, useGoodDeals } from './hooks';
-import { getPOIByCategory, getVIP } from './api';
 import { ScreenLoader } from '@components/ScreenLoader';
-import { Promotions } from './components/Promotions';
-import { POITabLabelList } from './components/POITabLabelList';
-import { POIList } from './components/POIList';
+import { useGoodDeals } from './hooks';
+import { getCategories } from './api';
+import { Badge } from '@components/Badge';
+import { POICard } from './components/POICard';
+import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
 import { useRefreshOnFocus } from '@hooks/api/refetch';
+import { Center } from '@components/Center';
 
 const Main: React.FC<
   NativeStackScreenProps<GoodDealsStackParamList, 'GoodDeals/Main'>
 > = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
-  const [POISets, setPOISets] = useState<any[]>([]);
-  const [isPOISetsLoading, setIsPOISetsLoading] = useState<boolean>(false);
-  const tabLabelListQuery = useCategories();
-  const goodDealQuery = useGoodDeals();
-  useRefreshOnFocus(() =>
-    Promise.all([goodDealQuery.refetch, tabLabelListQuery.refetch])
-  );
+  const {
+    data: promotions,
+    isLoading: isPromotionsLoading,
+    isError: isPromotionError,
+    refetch: refetchGoodDeals,
+  } = useGoodDeals();
+  const {
+    data: spots,
+    isLoading: isSpotsLoading,
+    isError: isSpotsError,
+    refetch: refetchCategories,
+  } = useQuery(['spots-by-category'], getCategories);
 
-  const getInitialPOISets = async () => {
-    setIsPOISetsLoading(true);
+  const categoryLabels = useMemo(() => {
+    return spots?.map((spot) => spot.label);
+  }, [spots]);
 
+  const [activeTabLabel, setActiveTabLabel] = useState(categoryLabels?.at(0));
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
     try {
-      const data = await getVIP();
-      setPOISets(data);
+      setRefreshing(true);
+      setTimeout(() => { }, 2000);
+      await Promise.all([refetchGoodDeals, refetchCategories]);
     } catch (e: any) {
       console.log(e.message);
     } finally {
-      setIsPOISetsLoading(false);
+      setRefreshing(false);
     }
-  };
-
-  useEffect(() => {
-    getInitialPOISets();
   }, []);
 
-  const redefineActiveTabId = async (tabId: string) => {
-    setIsPOISetsLoading(true);
+  // automatically refetch on screen focus
+  useRefreshOnFocus(onRefresh);
 
-    try {
-      let data: any[];
-      if (tabId === '0') {
-        data = await getVIP();
-      } else {
-        data = await getPOIByCategory(tabId);
-      }
-      setPOISets(data);
-    } catch (e: any) {
-      console.log(e.message);
-    } finally {
-      setIsPOISetsLoading(false);
-    }
-  };
+  useEffect(() => {
+    setActiveTabLabel(categoryLabels?.at(0));
+  }, [categoryLabels, spots]);
 
-  // waiting for the first data ⏳
-  if (goodDealQuery.isLoading && tabLabelListQuery.isLoading) {
+  if (isPromotionsLoading || isSpotsLoading) {
     return <ScreenLoader />;
   }
 
+  if (isPromotionError || isSpotsError) {
+    return (
+      <Center>
+        <Text>Erreur survenue. Réessayer plus tard</Text>
+      </Center>
+    );
+  }
+
   return (
-    <View
-      className="flex-1"
-      style={{
-        paddingTop: insets.top,
-      }}
-    >
+    <SafeAreaView className="flex-1">
       <ScreenContentLayout
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          marginTop: 12,
-          paddingHorizontal: 0,
-          paddingBottom: 32,
-        }}
         refreshControl={
           <RefreshControl
-            refreshing={
-              tabLabelListQuery.isRefetching || goodDealQuery.isRefetching
-            }
-            onRefresh={async () => {
-              await Promise.all([
-                tabLabelListQuery.refetch,
-                goodDealQuery.refetch,
-              ]);
-            }}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
         }
       >
-        <Promotions
-          isLoading={goodDealQuery.isLoading}
-          isError={goodDealQuery.isError}
-          data={goodDealQuery.data}
-        />
-        <POITabLabelList
-          isLoading={tabLabelListQuery.isLoading}
-          isError={tabLabelListQuery.isError}
-          data={tabLabelListQuery.data as any[]}
-          changeTabId={redefineActiveTabId}
-        />
-        <POIList
-          isLoading={isPOISetsLoading}
-          data={POISets}
-        />
+        {/* PROMOTIONS */}
+        <View>
+          <View className="px-4">
+            <Text className="font-[extraBold] text-lg">Promotions</Text>
+          </View>
+
+          <FlatList
+            horizontal
+            data={promotions}
+            className="mt-4"
+            decelerationRate="fast"
+            snapToInterval={342}
+            snapToAlignment="center"
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              columnGap: 16,
+              paddingHorizontal: 16,
+            }}
+            renderItem={({ item }) => {
+              return (
+                <View className="h-[180] w-[320px] overflow-hidden rounded-2xl bg-gray-200">
+                  <Image
+                    source={{ uri: item.photo }}
+                    className="h-full w-full"
+                    resizeMode="cover"
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
+
+        {/* CATEGORY LABELS */}
+        <View>
+          <View className="mt-10 px-4">
+            <Text className="font-[extraBold] text-lg">Points d'intérêts</Text>
+          </View>
+
+          <FlatList
+            horizontal
+            data={categoryLabels!}
+            showsHorizontalScrollIndicator={false}
+            className="mt-4"
+            contentContainerStyle={{
+              columnGap: 10,
+              paddingHorizontal: 16,
+            }}
+            renderItem={({ item: label }) => {
+              return (
+                <Badge
+                  title={label}
+                  isSelected={label === activeTabLabel}
+                  onPress={() => setActiveTabLabel(label)}
+                />
+              );
+            }}
+          />
+        </View>
+
+        {/* SPOTS */}
+        <View
+          className="mt-6 px-4"
+          style={{ rowGap: 32 }}
+        >
+          {spots
+            ?.filter((category) => category.label === activeTabLabel)
+            .map((category) =>
+              category.interestPoints
+                .sort((a: any, b: any) => {
+                  return -(Number(a.vip) - Number(b.vip));
+                })
+                .map((spot: any) => {
+                  return (
+                    <POICard
+                      key={spot.id}
+                      data={spot}
+                    />
+                  );
+                })
+            )}
+        </View>
       </ScreenContentLayout>
-    </View>
+    </SafeAreaView>
   );
 };
 

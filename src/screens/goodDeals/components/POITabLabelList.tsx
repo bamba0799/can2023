@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
-import { Center } from '@components/Center';
 import { Badge } from '@components/Badge';
 
 const POITabLabelList: React.FC<{
@@ -38,16 +37,16 @@ const POITabLabelList: React.FC<{
           />
         </>
       ) : isError ? ( // on error
-        <Center>
+        <View className='mt-10 px-4'>
           <Text>Erreur survenue.</Text>
-        </Center>
+        </View>
       ) : (
         // on success
         <>
           <View className="mt-10 px-4">
             <Text className="font-[extraBold] text-lg">Points d'intérêts</Text>
-              </View>
-              
+          </View>
+
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}

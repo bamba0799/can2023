@@ -61,7 +61,7 @@ const Promotions: React.FC<{
               return (
                 <View className="h-[180] w-[320px] overflow-hidden rounded-2xl bg-gray-200">
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.photo }}
                     className="h-full w-full"
                     resizeMode="cover"
                   />

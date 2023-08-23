@@ -41,7 +41,7 @@ export const Main: React.FC<
                 <View className="h-[164px] w-full overflow-hidden rounded-2xl">
                   <View className="absolute z-[1] h-full w-full bg-gray-300" />
                   <Image
-                    source={{ uri: stadium.images[0]?.url }}
+                    source={{ uri: stadium.photo }}
                     className="absolute left-0 top-0 z-[98] h-full w-full"
                     resizeMode="cover"
                   />

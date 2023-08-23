@@ -132,7 +132,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <SafeAreaProvider>
-          {!user ? <AppStack /> : <AuthStack />}
+          {user ? <AppStack /> : <AuthStack />}
         </SafeAreaProvider>
         <StatusBar style="auto" />
       </NavigationContainer>
