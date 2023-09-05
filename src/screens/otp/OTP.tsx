@@ -16,7 +16,7 @@ const OTP_MAX_LENGTH = 4;
 const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
   navigation,
 }) => {
-  const [OTP, setOTP] = useState('');
+  const [otp, setOtp] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
   const [isNumberLengthCorrect, setisNumberLengthCorrect] = useState(false);
   const { mutateAsync: validateOTP } = useValidateOTP();
@@ -26,14 +26,14 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
   const submitHandler = async () => {
     setIsLoggingIn(true);
 
-    if (!OTP) {
+    if (!otp) {
       return setIsLoggingIn(false);
     }
 
     try {
       await validateOTP(
         {
-          OTP,
+          otp,
         },
         {
           onSuccess: async (data) => {
@@ -67,8 +67,8 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
   };
 
   useEffect(() => {
-    setisNumberLengthCorrect(OTP.length === OTP_MAX_LENGTH);
-  }, [OTP]);
+    setisNumberLengthCorrect(otp.length === OTP_MAX_LENGTH);
+  }, [otp]);
 
   return (
     <>
@@ -95,8 +95,8 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
               <View className="flex-row rounded-lg">
                 <TextInput
                   className={`flex-1 rounded-lg border border-gray-300 p-3 font-[semiBold] text-base`}
-                  value={OTP}
-                  onChangeText={setOTP}
+                  value={otp}
+                  onChangeText={setOtp}
                   maxLength={OTP_MAX_LENGTH}
                   placeholder="Entrez le code à 4 chiffres ici"
                   textAlignVertical="center"
@@ -107,11 +107,10 @@ const OTP: React.FC<NativeStackScreenProps<AuthStackParamList, 'OTP'>> = ({
                 />
               </View>
               <Button
-                className={`flex-row items-center justify-center rounded-lg px-4 py-3 ${
-                  isLoggingIn || !isNumberLengthCorrect
-                    ? 'bg-[#999]'
-                    : 'bg-primary'
-                }`}
+                className={`flex-row items-center justify-center rounded-lg px-4 py-3 ${isLoggingIn || !isNumberLengthCorrect
+                  ? 'bg-[#999]'
+                  : 'bg-primary'
+                  }`}
                 disabled={isLoggingIn || !isNumberLengthCorrect}
                 onPress={submitHandler}
               >

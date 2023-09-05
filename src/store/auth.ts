@@ -12,10 +12,7 @@ type AuthProps = {
 };
 
 export const useAuthStore = create<AuthProps>((set) => ({
-  user: {
-    id: '1a60c942-33bc-465d-80e3-3a682e85c3c7',
-    contact: '0584364096',
-  },
+  user: null,
   TOKEN_KEY: 'token',
   setUser: (user: any) =>
     new Promise((rejected, resolved) => {

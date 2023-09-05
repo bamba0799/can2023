@@ -8,7 +8,7 @@ type LoginProps = {
 };
 
 type ValidateOTPProps = {
-  OTP: string;
+  otp: string;
 };
 
 export async function login(props: LoginProps) {
