@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Pressable, Image, View } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { GoodDealsStackParamList } from '@navigation/app/home/goodDeals/types';
@@ -37,10 +37,14 @@ const POICard: React.FC<POICardProps> = ({ data }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <Pressable
       className="w-full space-y-2"
-    // onPress={() => navigation.navigate('GoodDeals/Details', data)}
+      onPress={() => navigation.navigate('GoodDeals/Details', data)}
     >
       <View className="h-[164px] w-full overflow-hidden rounded-2xl">
         <View className="relative h-full w-full bg-gray-300" />

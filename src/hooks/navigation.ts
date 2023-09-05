@@ -1,4 +1,4 @@
-import { usepost } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 
 export function useHideBottomTab() {

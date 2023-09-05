@@ -58,7 +58,7 @@ const Details: React.FC<
             }}
           >
             <Image
-              source={{ uri: data?.images[0].url }}
+              source={{ uri: data?.photo }}
               className="absolute z-[98] h-full w-full"
               resizeMode="cover"
             />
