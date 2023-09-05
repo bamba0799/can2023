@@ -11,11 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ff7900"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ci.orange.digital.center.fanxp"
     },
     "android": {
       "adaptiveIcon": {

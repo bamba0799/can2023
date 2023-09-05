@@ -5,8 +5,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MatchsStack } from '@navigation/app/home/matchs';
 
 const Matchs: React.FC<
-NativeStackScreenProps<HomeTabsParamList, 'Home/Matchs'>
+  NativeStackScreenProps<HomeTabsParamList, 'Home/Matchs'>
 > = () => {
-return <MatchsStack/>
+  return <MatchsStack />
 }
 export default Matchs
