@@ -98,6 +98,7 @@ const App = () => {
   useEffect(() => {
     checkIfAPPHasAlreadyBeenLaunched();
     fetchUser();
+    // AsyncStorage.clear()
 
     const subscription = AppState.addEventListener('change', onAppStateChange);
     return () => subscription.remove();
