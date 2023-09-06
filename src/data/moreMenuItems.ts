@@ -1,13 +1,13 @@
 export default [
-  {
-    id: '1',
-    label: 'Acheter des tickets',
-    icon: {
-      name: 'ios-receipt-outline',
-      size: 24,
-    },
-    to: 'Extra/BuyTickets',
-  },
+  // {
+  //   id: '1',
+  //   label: 'Acheter des tickets',
+  //   icon: {
+  //     name: 'ios-receipt-outline',
+  //     size: 24,
+  //   },
+  //   to: 'Extra/BuyTickets',
+  // },
   {
     id: '2',
     label: 'Équipes favorites',

@@ -43,10 +43,10 @@ const ExtraStack = () => {
         name="Extra/Game"
         component={Game}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Extra/BuyTickets"
         component={BuyTicketsStack}
-      />
+      /> */}
       <Stack.Screen
         name="Extra/Bet"
         component={BetStack}
