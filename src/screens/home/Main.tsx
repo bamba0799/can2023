@@ -5,54 +5,7 @@ import { HomeStackParamList } from '@navigation/app/home/home/types';
 import { ScreenContentLayout } from '@layouts/ScreenContentLayout';
 import { Header } from '@components/Header';
 import { StoryBox } from './components/StoryBox';
-
-const dummyStoryData = [
-  {
-    id: '1',
-    label: '',
-    thumbnail: require('@assets/images/story/ivory-cost.jpeg'),
-    media: {
-      type: 'image',
-      source: require('@assets/images/story/ivory-cost.jpeg'),
-    },
-  },
-  {
-    id: '2',
-    label: '',
-    thumbnail: require('@assets/images/story/trophy.avif'),
-    media: {
-      type: 'image',
-      source: require('@assets/images/story/trophy.avif'),
-    },
-  },
-  {
-    id: '3',
-    label: '',
-    thumbnail: require('@assets/images/story/celebration-civ.webp'),
-    media: {
-      type: 'image',
-      source: require('@assets/images/story/celebration-civ.webp'),
-    },
-  },
-  {
-    id: '4',
-    label: '',
-    thumbnail: require('@assets/images/story/trophy-2.jpg'),
-    media: {
-      type: 'image',
-      source: require('@assets/images/story/trophy-2.jpg'),
-    },
-  },
-  {
-    id: '5',
-    label: '',
-    thumbnail: require('@assets/images/story/reigning-champs.jpeg'),
-    media: {
-      type: 'image',
-      source: require('@assets/images/story/reigning-champs.jpeg'),
-    },
-  },
-];
+import { useStoryStore } from '@store/story';
 
 const highlights = [
   { id: '1', url: require('@assets/videos/vid-1.mov') },
@@ -86,18 +39,18 @@ const previous_winners = [
 const Main: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'Home/Main'>
 > = ({ navigation, route }) => {
+  const dummyStoryData = useStoryStore(state => state.stories)
+
   return (
     <View className="flex-1">
       <Header
         title={() => (
           <View className="ml-4 flex-row">
             <Text className="font-[extraBold] text-lg text-primary">Fan</Text>
-            <Text className="font-[extraBold] text-lg">Xperience</Text>
+            <Text className="font-[extraBold] text-lg">Xp</Text>
           </View>
         )}
-        onNavigateToProfile={() =>
-          navigation.navigate('Home/Extra', { screen: 'Extra/Profile' })
-        }
+        showProfile={false}
       />
 
       <ScreenContentLayout
@@ -117,7 +70,7 @@ const Main: React.FC<
             paddingHorizontal: 16,
             columnGap: 10,
           }}
-          renderItem={({ item }) => <StoryBox data={item} />}
+          renderItem={({ item, index }) => <StoryBox data={item} index={index} />}
         />
 
         {/* Best goals */}

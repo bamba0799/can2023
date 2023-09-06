@@ -3,7 +3,7 @@ import { HomeStackParamList } from './types';
 
 // screens
 import { Main } from '@screens/home/Main';
-import { Story } from '@screens/home/Story';
+import { StoryView } from '@screens/home/Story';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -19,7 +19,7 @@ const HomeStack = () => {
       />
       <Stack.Screen
         name="Home/Story"
-        component={Story}
+        component={StoryView}
       />
     </Stack.Navigator>
   );
