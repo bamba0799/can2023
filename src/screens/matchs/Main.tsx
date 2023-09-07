@@ -83,7 +83,7 @@ const Main: React.FC<
   }
   return (
     <View className="flex-1">
-      <Header title={'Matchs'} />
+      <Header title={'Matchs'} showProfile={false} />
       <View className="flex-1">
         <ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={() => null} />}>
           <View className="mt-4">
