@@ -91,6 +91,7 @@ const FavTeams: React.FC<
         title="Équipes favorites"
         showBackIcon
         onNavigateBack={navigation.goBack}
+        showProfile={false}
       />
 
       <ScreenContentLayout

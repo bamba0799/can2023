@@ -24,6 +24,7 @@ export const Main: React.FC<
         title="Stades"
         showBackIcon
         onNavigateBack={navigation.goBack}
+        showProfile={false}
       />
 
       <ScreenContentLayout

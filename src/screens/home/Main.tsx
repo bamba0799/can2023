@@ -16,21 +16,25 @@ const highlights = [
 const previous_winners = [
   {
     id: '1',
+    name: 'Sénégal',
     source: require('@assets/images/previous_cans/sen.webp'),
     year: 2021,
   },
   {
     id: '2',
+    name: 'Algérie',
     source: require('@assets/images/previous_cans/alg.jpeg'),
     year: 2019,
   },
   {
     id: '3',
+    name: 'Cameroun',
     source: require('@assets/images/previous_cans/cmr.webp'),
     year: 2017,
   },
   {
     id: '4',
+    name: 'Côte d\'Ivoire',
     source: require('@assets/images/previous_cans/civ.webp'),
     year: 2015,
   },
@@ -142,7 +146,10 @@ const Main: React.FC<
                   className="h-full w-full"
                   resizeMode="cover"
                 />
-                <View className="absolute right-1.5 top-1.5 rounded-full bg-white px-2 py-1">
+                <View className="absolute left-1.5 top-1.5 rounded-full bg-white/60 px-2 py-1">
+                  <Text className="font-[bold] text-xs">{item.name}</Text>
+                </View>
+                <View className="absolute right-1.5 top-1.5 rounded-full bg-white/60 px-2 py-1">
                   <Text className="font-[bold] text-xs">{item.year}</Text>
                 </View>
               </View>
