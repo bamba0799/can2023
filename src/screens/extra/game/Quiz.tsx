@@ -53,27 +53,30 @@ export const Quiz = ({ navigation }: any) => {
 
   const [ownerPoint, setOwnerPoint] = useState<any>([])
   const [userConnectPoint, setUserConnectPoint] = useState<any>(0)
-  console.log("userconnected",userConnectPoint)
   
-  
-  const getOwnerPoint = async() => {
+  const getOwnerData = async(ownerId:string) => {
+    console.log("ssssssssssssss");
+      try {
+        const response = await axiosInstance.get(`http://192.168.252.91:3100/api/user/userPerId/${ownerId}`)
+        console.log(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+  }
+  const getUser = async() => {
     try{
       const response = await axiosInstance.get(`http://192.168.252.91:3100/api/quiz/sumPoint/1`)
-      // console.log(response.data.sort((a: any, b: any) => b._sum.point - a._sum.point))
-      
-      const sortResponse = response.data.sort((a: any, b: any) => b._sum.point - a._sum.point)
+      const sortResponse = response.data.sort((a: any, b: any) => b.totalPoints - a.totalPoints)
       setOwnerPoint(sortResponse[0])
-
       const userConnectPoint = response.data.filter((data:any) => data.userId == user?.id)
-      setUserConnectPoint(userConnectPoint[0]._sum.point)
-      console.log("point user connect", userConnectPoint[0]._sum.point)//hbsh
+      setUserConnectPoint(userConnectPoint[0].totalPoints)
+      console.log("point user connect", userConnectPoint[0].totalPoints)//hbsh
       
     }catch(e){
       console.log('erreur chargement des point users', e);
     }
   }
-
-  
+ 
   const waitTimeCountDown = () => {
     const intervalId: any = setInterval(() => {
       setWaitTimeCount((prev:any) => --prev)
@@ -110,8 +113,9 @@ export const Quiz = ({ navigation }: any) => {
       setEmoji('❌')
       setResponseStatus('Mauvaise réponse')
     }
-    console.log("questionID",question?.id, "responseId", response?.id, "userId", user?.id, "point",point);
+
     
+
     const data = {
       "questionId": question?.id,
       "quizId":"1",
@@ -131,7 +135,7 @@ export const Quiz = ({ navigation }: any) => {
 
   const resultat = () => {
     setDisplayFinalResult(true)
-    getOwnerPoint()
+    getUser()
   }
 
   useEffect(() => {
@@ -336,7 +340,7 @@ export const Quiz = ({ navigation }: any) => {
                 <View className='pl-10  w-full flex flex-row items-center '>
                   <Text style={{fontSize:32}} className='font-semi-bold  text-orange-500'>Vainqueur : </Text>
                   {/* affichage du vainqueur */}
-                  <Text style={{fontSize:23}} className='font-bold mt-2'>{ownerPoint?.userId}</Text>
+                  <Text style={{fontSize:23}} className='font-bold mt-2'>{ownerPoint?.contact}</Text>
                 </View>
                 <View className='  w-full  h-60 justify-center'>
                   <View className='pl-10 flex flex-row items-center '>
