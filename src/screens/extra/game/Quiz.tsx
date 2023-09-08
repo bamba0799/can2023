@@ -66,7 +66,7 @@ export const Quiz = ({ navigation }: any) => {
 
       const userConnectPoint = response.data.filter((data:any) => data.userId == user?.id)
       setUserConnectPoint(userConnectPoint[0]._sum.point)
-      console.log("point user connect", userConnectPoint[0]._sum.point)
+      console.log("point user connect", userConnectPoint[0]._sum.point)//hbsh
       
     }catch(e){
       console.log('erreur chargement des point users', e);
