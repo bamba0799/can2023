@@ -3,6 +3,8 @@ import { create } from 'zustand';
 export type User = {
   id: string;
   contact: string;
+  firstName:string;
+  lastName:string
 };
 
 type AuthProps = {
