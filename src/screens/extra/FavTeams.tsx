@@ -39,6 +39,7 @@ const FavTeams: React.FC<
   );
 
   async function onFollow(team: any) {
+    console.log("eeeeee",team.isMemberOfCurrentCAN)
     setSelectedTeam({ id: team.id, status: 'loading' });
 
     try {
@@ -46,7 +47,7 @@ const FavTeams: React.FC<
         {
           teamId: team.id,
           userId: user?.id!,
-          isMemberOfCurrentCAN: team.isMemberOfCurrentCAN,
+          isMemberOfCurrentCAN: true,
         },
         {
           onSuccess(data, variables, ctx) {
