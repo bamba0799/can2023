@@ -98,9 +98,9 @@ const Main: React.FC<
                   (item, index) =>
                     dates.findIndex((date) => date.date === item.date) === index
                 )
-                .map((daat: any) => (
+                .map((daat: any, index:any) => (
                   <TouchableOpacity
-                    key={daat.id}
+                    key={index}
                     activeOpacity={0.7}
                     className={`rounded-full border border-primary px-3 py-[6px] ${daat.id === selectedDate ? 'bg-primary' : 'bg-transparent'
                       }`}
@@ -120,23 +120,23 @@ const Main: React.FC<
           </View>
 
           <View className='px-4'>
-            {matchperdates.map((matchperdate: any) => (
+            {matchperdates.map((matchperdate: any, index:any) => (
               <View
-                key={matchperdate.id}
+                key={index}
                 className="mt-6 items-center"
               >
                 <View className="w-96 items-center justify-center rounded-xl bg-white py-4">
                   <View className="flex-row">
                     <View className="flex flex-row items-center justify-center">
                       {/* affichage du code pays 1 */}
-                      {matchperdate.matchStageTeam.map((stat: any) => {
+                      {matchperdate.matchStageTeam.map((stat: any, index:any) => {
                         if (
                           stat.team.code == matchperdate.matchStageTeam[0].team.code
                         ) {
                           return (
                             <View
                               className="flex flex-row items-center"
-                              key={stat.teamId}
+                              key={index}
                             >
                               <Text className="font-bold ">{stat.team.code}</Text>
                               <Image
@@ -153,28 +153,28 @@ const Main: React.FC<
                       <View className="flex-row ">
                         {matchperdate.matchStageTeam.map(
                           (sta: any, index: number) => {
-                            if (sta.goal == matchperdate.matchStageTeam[0].goal) {
+                            if (sta.goals == matchperdate.matchStageTeam[0].goals) {
                               if (index === 0) {
                                 return (
                                   <Text
-                                    key={sta.teamId}
+                                    key={index}
                                     className="text-xl font-bold text-red-800"
                                   >
-                                    {sta.goal != null ? sta.goal : 'vs'}
+                                    {sta.goals != null ? sta.goals : 'vs'}
                                   </Text>
                                 );
                               } else return null;
                             }
                           }
                         )}
-                        {matchperdate.matchStageTeam.map((st: any) => {
-                          if (st.goal !== matchperdate.matchStageTeam[0].goal) {
+                        {matchperdate.matchStageTeam.map((st: any, index:any) => {
+                          if (st.goals !== matchperdate.matchStageTeam[0].goals) {
                             return (
                               <Text
-                                key={st.teamId}
+                                key={index}
                                 className="text-xl font-bold text-red-800"
                               >
-                                - {st.goal != null ? st.goal : 'vs'}
+                                -{ st.goals != null ? st.goals : 'vs'}
                               </Text>
                             );
                           }
@@ -184,7 +184,7 @@ const Main: React.FC<
                     <View>
                       <View className="flex-row items-center justify-center">
                         {/* affichage du code pays 2 */}
-                        {matchperdate.matchStageTeam.map((stat: any) => {
+                        {matchperdate.matchStageTeam.map((stat: any, index:any) => {
                           if (
                             stat.team.code !==
                             matchperdate.matchStageTeam[0].team.code
@@ -192,7 +192,7 @@ const Main: React.FC<
                             return (
                               <View
                                 className="flex-row items-center"
-                                key={stat.teamId}
+                                key={index}
                               >
                                 <View className="mr-3 h-12 w-12 rounded-full border-2 border-gray-100">
                                   <Image
