@@ -139,7 +139,7 @@ export const Quiz = ({ navigation }: any) => {
   }
 
   useEffect(() => {
-
+    setResultModal(false)
   }, [])
   useEffect(() => {
     socket.on('receive_message', (msg) => { 
