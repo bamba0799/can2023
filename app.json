@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "can-2023-mirror-app",
-    "slug": "fanxpv4",
+    "slug": "fan-xp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ff7900"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ci.orange.digital.center.fanxp"
@@ -27,12 +25,6 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "a7740d49-73f3-4e82-a228-65ebb812e398"
-      }
-    },
-    "owner": "nablson"
+    }
   }
 }
