@@ -30,7 +30,7 @@ const FavTeams: React.FC<
 > = ({ navigation, route }) => {
   const user = useAuthStore((state) => state.user);
   const { data: currentTeams, isLoading: isCurrentLoading } = useCurrentTeams();
-  const { data: favTeams, isLoading: isFavLoading } = useFavTeams(user?.id!);
+  const { data: favTeams, isLoading: isFavLoading } = useFavTeams();
   const { mutateAsync: addTeamAsFav } = useAddTeamAsFav();
   const { mutateAsync: unassignTeamToUser } = useRemoveTeamToFav();
   const queryClient = useQueryClient();
@@ -39,20 +39,17 @@ const FavTeams: React.FC<
   );
 
   async function onFollow(team: any) {
-    console.log("eeeeee",team.isMemberOfCurrentCAN)
     setSelectedTeam({ id: team.id, status: 'loading' });
 
     try {
       await addTeamAsFav(
         {
           teamId: team.id,
-          userId: user?.id!,
           isMemberOfCurrentCAN: true,
         },
         {
-          onSuccess(data, variables, ctx) {
-            queryClient.invalidateQueries(['current-teams']);
-            queryClient.invalidateQueries(['fav-teams', variables.userId]);
+          onSuccess(data) {
+            queryClient.invalidateQueries();
           },
         }
       );
@@ -67,13 +64,11 @@ const FavTeams: React.FC<
     try {
       await unassignTeamToUser(
         {
-          userId: user?.id!,
           teamId: team.id,
         },
         {
-          onSuccess(data, variables, ctx) {
-            queryClient.invalidateQueries(['current-teams']);
-            queryClient.invalidateQueries(['fav-teams', variables.userId]);
+          onSuccess(data) {
+            queryClient.invalidateQueries();
           },
         }
       );

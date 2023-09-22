@@ -11,15 +11,14 @@ export async function getCurrentTeams() {
   return data;
 }
 
-export async function getFavTeams(userId: string) {
-  const URL = FAV_TEAMS_API_URL + '/' + userId;
+export async function getFavTeams() {
+  const URL = FAV_TEAMS_API_URL;
   const { data } = await axiosInstance.get<any>(URL);
   return data;
 }
 
 export async function postFavTeam(props: {
   teamId: string;
-  userId: string;
   isMemberOfCurrentCAN: boolean;
 }) {
   const { data, status } = await axiosInstance.post<any>(
@@ -29,7 +28,7 @@ export async function postFavTeam(props: {
   return data;
 }
 
-export async function removeFavTeam(props: { userId: string; teamId: string }) {
+export async function removeFavTeam(props: { teamId: string }) {
   const { data, status } = await axiosInstance.delete<any>(FAV_TEAMS_API_URL, {
     data: props,
   });

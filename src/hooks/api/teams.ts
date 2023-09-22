@@ -10,8 +10,8 @@ export function useCurrentTeams(enabled = true) {
   return useQuery(['current-teams'], getCurrentTeams, { enabled });
 }
 
-export function useFavTeams(userId: string, enabled = true) {
-  return useQuery(['fav-teams', userId], () => getFavTeams(userId), {
+export function useFavTeams(enabled = true) {
+  return useQuery(['fav-teams'], getFavTeams, {
     enabled,
   });
 }
