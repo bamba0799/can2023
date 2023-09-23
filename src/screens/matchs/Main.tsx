@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import {
@@ -22,6 +21,7 @@ import { Header } from '@components/Header';
 import { ScreenLoader } from '@components/ScreenLoader';
 import { getMatchs } from '@utils/match';
 import { Button } from '@components/Button';
+import { axiosInstance } from '@lib/axios';
 
 const Main: React.FC<
   NativeStackScreenProps<MatchsStackParamList, 'Matchs/Main'>
@@ -49,7 +49,7 @@ const Main: React.FC<
   };
 
   const getMatchPerDate = (date: string, id: number) => {
-    axios
+    axiosInstance
       .get(`${API_BASE_URL}/matchs?date=${date}`)
       .then((res) => {
         setMatchperdates(res.data);
@@ -98,7 +98,7 @@ const Main: React.FC<
                   (item, index) =>
                     dates.findIndex((date) => date.date === item.date) === index
                 )
-                .map((daat: any, index:any) => (
+                .map((daat: any, index: any) => (
                   <TouchableOpacity
                     key={index}
                     activeOpacity={0.7}
@@ -120,7 +120,7 @@ const Main: React.FC<
           </View>
 
           <View className='px-4'>
-            {matchperdates.map((matchperdate: any, index:any) => (
+            {matchperdates.map((matchperdate: any, index: any) => (
               <View
                 key={index}
                 className="mt-6 items-center"
@@ -129,7 +129,7 @@ const Main: React.FC<
                   <View className="flex-row">
                     <View className="flex flex-row items-center justify-center">
                       {/* affichage du code pays 1 */}
-                      {matchperdate.matchStageTeam.map((stat: any, index:any) => {
+                      {matchperdate.matchStageTeam.map((stat: any, index: any) => {
                         if (
                           stat.team.code == matchperdate.matchStageTeam[0].team.code
                         ) {
@@ -167,14 +167,14 @@ const Main: React.FC<
                             }
                           }
                         )}
-                        {matchperdate.matchStageTeam.map((st: any, index:any) => {
+                        {matchperdate.matchStageTeam.map((st: any, index: any) => {
                           if (st.goals !== matchperdate.matchStageTeam[0].goals) {
                             return (
                               <Text
                                 key={index}
                                 className="text-xl font-bold text-red-800"
                               >
-                                -{ st.goals != null ? st.goals : 'vs'}
+                                -{st.goals != null ? st.goals : 'vs'}
                               </Text>
                             );
                           }
@@ -184,7 +184,7 @@ const Main: React.FC<
                     <View>
                       <View className="flex-row items-center justify-center">
                         {/* affichage du code pays 2 */}
-                        {matchperdate.matchStageTeam.map((stat: any, index:any) => {
+                        {matchperdate.matchStageTeam.map((stat: any, index: any) => {
                           if (
                             stat.team.code !==
                             matchperdate.matchStageTeam[0].team.code
